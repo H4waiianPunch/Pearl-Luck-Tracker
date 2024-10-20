@@ -43,7 +43,7 @@ public class AerialFishingPlugin extends Plugin
 	private AerialFishingConfig config; // Configuration variable
 
 	private int fishCaught = 0;
-	private int dryestStreak = 0; // Will be loaded from config
+	private int dryestStreak; // Will be loaded from config
 	private int lastStreak = 0;
 
 	@Override
@@ -53,9 +53,7 @@ public class AerialFishingPlugin extends Plugin
 		overlayManager.add(overlay);
 
 		// Load dry streak from the config
-		config = configManager.getConfig(AerialFishingConfig.class);
-		dryestStreak = config.dryestStreak();
-		log.info("Loaded dryestStreak: " + dryestStreak);
+
 	}
 
 	@Override
@@ -67,8 +65,10 @@ public class AerialFishingPlugin extends Plugin
 		lastStreak = 0;
 
 		// Save the dryest streak before shutdown
-		configManager.setConfiguration("aerialfishing", "dryestStreak", dryestStreak);
+
 	}
+
+
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
@@ -89,7 +89,9 @@ public class AerialFishingPlugin extends Plugin
 			if (fishCaught > dryestStreak)
 			{
 				dryestStreak = fishCaught;
-				configManager.setConfiguration("aerialfishing", "dryestStreak", dryestStreak);
+
+				// Update dryestStreak to config for persistence
+
 				log.info("New highest dryestStreak: " + dryestStreak);
 			}
 			lastStreak = fishCaught; // Sets the last streak value to the fish caught value
@@ -99,14 +101,14 @@ public class AerialFishingPlugin extends Plugin
 		}
 	}
 
-	@Subscribe
-	public void onGameStateChanged(GameStateChanged gameStateChanged)
-	{
-		if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-		{
-			client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Aerial Fishing Tracker is active!", null);
-		}
-	}
+	//@Subscribe
+	//public void onGameStateChanged(GameStateChanged gameStateChanged)
+	//{
+	//	if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
+	//	{
+	//		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Aerial Fishing Tracker is active!", null);
+	//	}
+	//}
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
@@ -136,6 +138,10 @@ public class AerialFishingPlugin extends Plugin
 				{
 					overlayManager.add(overlay);
 					log.info("Bird equipped. Overlay added.");
+
+					// Pull the dry streak into the overlay from config
+
+
 				}
 			}
 			else

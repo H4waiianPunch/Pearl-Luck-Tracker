@@ -17,16 +17,5 @@ public interface AerialFishingConfig extends Config
 		return "Hello";
 	}
 
-	// Let the dry streak persist through closure
-	@ConfigItem(
-			keyName = "dryestStreak",
-			name = "Dryest Streak",
-			description = "Tracks your dry streak through game closure"
-	)
-
-	default int dryestStreak()
-	{
-		return 0;
-	}
 
 }
