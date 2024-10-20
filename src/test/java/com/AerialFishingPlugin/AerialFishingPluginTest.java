@@ -1,13 +1,13 @@
-package com.example;
+package com.AerialFishingPlugin;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;
 
-public class ExamplePluginTest
+public class AerialFishingPluginTest
 {
 	public static void main(String[] args) throws Exception
 	{
-		ExternalPluginManager.loadBuiltin(ExamplePlugin.class);
+		ExternalPluginManager.loadBuiltin(AerialFishingPlugin.class);
 		RuneLite.main(args);
 	}
 }

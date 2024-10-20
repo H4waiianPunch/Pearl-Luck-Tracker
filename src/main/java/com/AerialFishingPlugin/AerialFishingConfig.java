@@ -1,11 +1,11 @@
-package com.example;
+package com.AerialFishingPlugin;
 
 import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigGroup;
 import net.runelite.client.config.ConfigItem;
 
 @ConfigGroup("example")
-public interface ExampleConfig extends Config
+public interface AerialFishingConfig extends Config
 {
 	@ConfigItem(
 		keyName = "greeting",
@@ -16,4 +16,17 @@ public interface ExampleConfig extends Config
 	{
 		return "Hello";
 	}
+
+	// Let the dry streak persist through closure
+	@ConfigItem(
+			keyName = "dryestStreak",
+			name = "Dryest Streak",
+			description = "Tracks your dry streak through game closure"
+	)
+
+	default int dryestStreak()
+	{
+		return 0;
+	}
+
 }
