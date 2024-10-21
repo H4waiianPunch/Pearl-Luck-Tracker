@@ -53,7 +53,9 @@ public class AerialFishingPlugin extends Plugin
 		overlayManager.add(overlay);
 
 		// Load dry streak from the config
-
+		Integer savedDryestStreak = configManager.getRSProfileConfiguration("example", "dryestStreak", Integer.class);
+		dryestStreak = savedDryestStreak != null ? savedDryestStreak : 0;
+		log.info("Loaded dryestStreak from profile" + dryestStreak);
 	}
 
 	@Override
@@ -61,10 +63,13 @@ public class AerialFishingPlugin extends Plugin
 	{
 		log.info("Aerial Fishing Tracker stopped!");
 		overlayManager.remove(overlay);
-		fishCaught = 0;
-		lastStreak = 0;
 
 		// Save the dryest streak before shutdown
+		configManager.setRSProfileConfiguration("example", "dryestStreak", dryestStreak);
+		log.info("Saved dryestStreak to profile: " + dryestStreak);
+
+		fishCaught = 0;
+		lastStreak = 0;
 
 	}
 
@@ -91,7 +96,8 @@ public class AerialFishingPlugin extends Plugin
 				dryestStreak = fishCaught;
 
 				// Update dryestStreak to config for persistence
-
+				configManager.setRSProfileConfiguration("example", "dryestStreak", dryestStreak);
+				log.info("Saved dryestStreak to profile: " + dryestStreak);
 				log.info("New highest dryestStreak: " + dryestStreak);
 			}
 			lastStreak = fishCaught; // Sets the last streak value to the fish caught value
@@ -140,6 +146,8 @@ public class AerialFishingPlugin extends Plugin
 					log.info("Bird equipped. Overlay added.");
 
 					// Pull the dry streak into the overlay from config
+					//configManager.getRSProfileConfiguration("example", "dryestStreak", Integer.class);
+					//log.info("Saved dryestStreak to profile: " + dryestStreak);
 
 
 				}

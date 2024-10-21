@@ -37,13 +37,13 @@ public class AerialFishingOverlay extends Overlay
 
         // Add the last number of fish caught before getting a Pearl
         panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Last Pearl Took: " + plugin.getLastStreak())
+                .text("Last Pearl: " + plugin.getLastStreak())
                 .color(Color.WHITE) // Color can be adjusted
                 .build());
 
         // Add the highest streak (most fish caught before a Molch Pearl)
         panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Longest Dry : " + plugin.getDryestStreak())
+                .text("Longest Dry: " + plugin.getDryestStreak())
                 .color(Color.YELLOW)
                 .build());
 

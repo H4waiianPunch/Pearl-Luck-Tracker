@@ -17,5 +17,13 @@ public interface AerialFishingConfig extends Config
 		return "Hello";
 	}
 
-
+	@ConfigItem(
+			keyName = "dryestStreak",
+			name = "Dryest Streak",
+			description = "The most dry you've gone"
+	)
+	default int dryestStreak()
+	{
+		return 0;
+	}
 }
