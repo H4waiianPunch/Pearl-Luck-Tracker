@@ -99,6 +99,9 @@ public class AerialFishingPlugin extends Plugin
 		{
 			fishCaught++; // add +1 to the counter
 			tenchProgress++; // add +1 to the fish caught towards golden tench
+			updateOverlay();
+			log.info("Overlay Updated");
+
 			log.info("Fish caught: " + fishCaught + ", Golden Tench progress: " + tenchProgress);
 
 
@@ -122,16 +125,6 @@ public class AerialFishingPlugin extends Plugin
 			log.info("Molch Pearl collected. Fish count reset.");
 		}
 	}
-
-	// This is just to show a message that the plugin has started. Not required, but a good reference.
-	//@Subscribe
-	//public void onGameStateChanged(GameStateChanged gameStateChanged)
-	//{
-	//	if (gameStateChanged.getGameState() == GameState.LOGGED_IN)
-	//	{
-	//		client.addChatMessage(ChatMessageType.GAMEMESSAGE, "", "Aerial Fishing Tracker is active!", null);
-	//	}
-	//}
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
@@ -172,6 +165,7 @@ public class AerialFishingPlugin extends Plugin
 
 				fishCaught = 0;
 				lastStreak = 0;
+				tenchProgress = 0;
 			}
 		}
 	}
