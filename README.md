@@ -11,4 +11,12 @@ With this plugin, you will be able to see the following things:
 The dry streak will persist across your profile, whereas the other variables will reset with your session.
 The plugin will only be active when you have the Cormoront's glove equipped.
 
-(PUT AN IMAGE OF WHAT IT LOOKS LIKE HERE)
+Favorite it for easy access!
+![Scroll menu](https://github.com/user-attachments/assets/1f79eac0-fdc0-4fb8-92b3-5c00be80a225)
+
+In the configuration menu you're able to turn on or off the Golden Tench luck percentage.
+![OpenConfigMenu](https://github.com/user-attachments/assets/f044c03e-9227-4305-9262-97763bf99a9d)
+
+
+Here's what the overlay looks like in game! 
+![OverlayInGame](https://github.com/user-attachments/assets/b03f9bb4-ba37-44ea-9652-25ab1777f577)
