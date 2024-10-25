@@ -1,4 +1,4 @@
-package com.AerialFishingPlugin;
+package com.AerialFishingPearlLuck;
 
 import net.runelite.client.RuneLite;
 import net.runelite.client.externalplugins.ExternalPluginManager;

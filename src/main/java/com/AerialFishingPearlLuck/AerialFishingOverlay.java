@@ -1,4 +1,4 @@
-package com.AerialFishingPlugin;
+package com.AerialFishingPearlLuck;
 
 import net.runelite.client.ui.overlay.Overlay;
 import net.runelite.client.ui.overlay.OverlayLayer;
@@ -14,6 +14,7 @@ public class AerialFishingOverlay extends Overlay
 {
     private final AerialFishingPlugin plugin;
     private final PanelComponent panelComponent = new PanelComponent();
+    private String tenchChanceText = ""; // Add this
 
     @Inject
     public AerialFishingOverlay(AerialFishingPlugin plugin)
@@ -43,10 +44,24 @@ public class AerialFishingOverlay extends Overlay
 
         // Add the highest streak (most fish caught before a Molch Pearl)
         panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Longest Dry: " + plugin.getDryestStreak())
+                .text("Longest Dry: " + plugin.getDryStreak())
                 .color(Color.YELLOW)
                 .build());
 
-        return panelComponent.render(graphics); // Render the panel
+        // % chance for tench in session
+        double tenchPercentage = (double) plugin.getTenchChance() / 40000 * 100; // Had to double the rate here otherwise it was showing up as .1% after 10 fish instead of 20 for some reason.
+        String tenchPercentageFormatted = String.format("%.1f", tenchPercentage); // Format it
+        panelComponent.getChildren().add(TitleComponent.builder()
+                .text("Tench Chance: " + tenchPercentageFormatted + "%") // Display the chance
+                .color(Color.PINK)
+                .build());
+
+        return panelComponent.render(graphics);
+    }
+
+    // Add this method to set the Tench chance text
+    public void setTenchChanceText(String text)
+    {
+        this.tenchChanceText = text;
     }
 }
