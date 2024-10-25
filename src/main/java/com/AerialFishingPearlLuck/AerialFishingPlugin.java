@@ -42,9 +42,12 @@ public class AerialFishingPlugin extends Plugin
 	private int lastStreak = 0;
 	private int tenchProgress = 0;
 
+	private boolean overlayAdded = false;
+
 	@Override
 	protected void startUp() throws Exception
 	{
+		config = provideConfig();
 		log.info("Aerial Fishing Tracker started!");
 		overlayManager.add(overlay);
 	}
@@ -54,38 +57,16 @@ public class AerialFishingPlugin extends Plugin
 	{
 		log.info("Aerial Fishing Tracker stopped!");
 		overlayManager.remove(overlay);
-
-		/*// Save the dryest streak before shutdown
-		log.info("Saving dryStreak: " + dryStreak + " to profile.");
-		configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak);
-		log.info("Saved dryStreak to profile: " + dryStreak);*/
-
 		fishCaught = 0;
 		lastStreak = 0;
-
-		//log.info("Saving dryStreak to profile. Current value to save: " + dryStreak);
-
 	}
 
 	public void updateOverlay()
 	{
-		// Assuming tenchProgress is the number of fish caught since starting to track Golden Tench
-		// The chance for Golden Tench is 1/20,000
-
-		final int tenchChance = 40000; // The chance of getting a Golden Tench (1/20000)
-
-		// Calculate the percentage progress towards the next Golden Tench
-		log.info("Tench Progress: " + tenchProgress + ", Tench Chance: " + tenchChance);
-
-		double tenchPercentage = (double) tenchProgress / tenchChance * 100;
-
-		// Format the percentage to 1 decimal place
+		double tenchPercentage = (tenchProgress / 20) * 0.1;
 		String tenchPercentageFormatted = String.format("%.1f", tenchPercentage);
-
-		// Now, you can display this percentage in the overlay
 		overlay.setTenchChanceText("Tench Chance: " + tenchPercentageFormatted + "%");
-
-		log.info("Current Golden Tench chance: " + tenchPercentageFormatted + "%");
+		log.debug("Current Golden Tench chance: " + tenchPercentageFormatted + "%");
 	}
 
 
@@ -100,9 +81,8 @@ public class AerialFishingPlugin extends Plugin
 			fishCaught++; // add +1 to the counter
 			tenchProgress++; // add +1 to the fish caught towards golden tench
 			updateOverlay();
-			log.info("Overlay Updated");
-
-			log.info("Fish caught: " + fishCaught + ", Golden Tench progress: " + tenchProgress);
+			log.debug("Overlay Updated");
+			log.debug("Fish caught: " + fishCaught + ", Golden Tench progress: " + tenchProgress);
 
 
 		}
@@ -117,12 +97,11 @@ public class AerialFishingPlugin extends Plugin
 
 				// Update dryStreak to config for persistence
 				configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak); // add the value to the config dryStreak
-				log.info("Saved dryestStreak to profile: " + dryStreak);
+				log.debug("Saved dryestStreak to profile: " + dryStreak);
 			}
 			lastStreak = fishCaught; // Sets the last streak value to the fish caught value
-
 			fishCaught = 0; // Reset the fish count after collecting a Molch Pearl
-			log.info("Molch Pearl collected. Fish count reset.");
+			log.debug("Molch Pearl collected. Fish count reset.");
 		}
 	}
 
@@ -140,32 +119,34 @@ public class AerialFishingPlugin extends Plugin
 				int weaponId = weaponItem.getId();
 
 				// If the item in the weapon slot is neither ITEM_ID_1 nor ITEM_ID_2, remove the overlay
-				if (weaponId != ITEM_ID_1 && weaponId != ITEM_ID_2)
+				if (weaponId != ITEM_ID_1 && weaponId != ITEM_ID_2 && overlayAdded)
 				{
 					overlayManager.remove(overlay);
-					log.info("Bird not equipped. Overlay removed.");
+					overlayAdded = false;
+					log.debug("Bird not equipped. Overlay removed.");
 
 					// Reset stats when not using plugin - except dryStreak
 					fishCaught = 0;
 					lastStreak = 0;
-					log.info("Values Reset");
+					overlay.setTenchChanceText("Tench Chance: 0.0%");
+					log.debug("Values Reset");
 				}
-				else
+				else if ((weaponId == ITEM_ID_1 || weaponId == ITEM_ID_2) && !overlayAdded)
 				{
 					overlayManager.add(overlay);
-					log.info("Bird equipped. Overlay added.");
+					overlayAdded = true;
+					log.debug("Bird equipped. Overlay added.");
 					Integer savedDryStreak = configManager.getRSProfileConfiguration("pearlluck", "dryStreak", Integer.class);
 				}
 			}
-			else
+			else if (overlayAdded)
 			{
-				// No item in weapon slot
 				overlayManager.remove(overlay);
-				log.info("Weapon slot is empty. Overlay removed.");
-
+				overlayAdded = false;
+				log.debug("Weapon slot is empty. Overlay removed.");
 				fishCaught = 0;
 				lastStreak = 0;
-				tenchProgress = 0;
+				overlay.setTenchChanceText("Tench Chance: 0.0%");
 			}
 		}
 	}
@@ -189,10 +170,10 @@ public class AerialFishingPlugin extends Plugin
 		if (savedDryStreak == null) {
 			dryStreak = -1; // Set to -1 if error
 			configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak); // Save the new value
-			log.info("dryStreak was null. Set to -1.");
+			log.debug("dryStreak was null. Set to -1.");
 		} else {
 			dryStreak = savedDryStreak; // Load existing value
-			log.info("Loaded dryStreak from profile: " + dryStreak);
+			log.debug("Loaded dryStreak from profile: " + dryStreak);
 		}
 	}
 
@@ -205,6 +186,11 @@ public class AerialFishingPlugin extends Plugin
 
 		// Format the percentage to 1 decimal place
 		return String.format("%.1f", tenchPercentage) + "%";
+	}
+
+	public AerialFishingConfig getConfig()
+	{
+		return config; // Add this method to access the config
 	}
 
 

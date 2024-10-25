@@ -14,7 +14,7 @@ public class AerialFishingOverlay extends Overlay
 {
     private final AerialFishingPlugin plugin;
     private final PanelComponent panelComponent = new PanelComponent();
-    private String tenchChanceText = ""; // Add this
+    private String tenchChanceText = "Tench Chance: 0.0%"; // Starts the Tench Chance at 0.0%
 
     @Inject
     public AerialFishingOverlay(AerialFishingPlugin plugin)
@@ -49,12 +49,13 @@ public class AerialFishingOverlay extends Overlay
                 .build());
 
         // % chance for tench in session
-        double tenchPercentage = (double) plugin.getTenchChance() / 40000 * 100; // Had to double the rate here otherwise it was showing up as .1% after 10 fish instead of 20 for some reason.
-        String tenchPercentageFormatted = String.format("%.1f", tenchPercentage); // Format it
-        panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Tench Chance: " + tenchPercentageFormatted + "%") // Display the chance
-                .color(Color.PINK)
-                .build());
+        if (plugin.getConfig().showTenchChance())
+        {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text(tenchChanceText)
+                    .color(Color.PINK)
+                    .build());
+        }
 
         return panelComponent.render(graphics);
     }
