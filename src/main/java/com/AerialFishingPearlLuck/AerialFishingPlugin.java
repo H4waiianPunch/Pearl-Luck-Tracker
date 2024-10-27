@@ -35,6 +35,7 @@ public class AerialFishingPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
+	@Inject
 	private AerialFishingConfig config; // Configuration variable
 
 	private int fishCaught = 0;
@@ -47,7 +48,6 @@ public class AerialFishingPlugin extends Plugin
 	@Override
 	protected void startUp() throws Exception
 	{
-		config = provideConfig();
 		log.info("Aerial Fishing Tracker started!");
 		overlayManager.add(overlay);
 	}
