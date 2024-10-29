@@ -31,7 +31,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "showTenchChance",
 			name = "Show Tench Chance",
-			description = "Check box to HIDE the tench chance."
+			description = "Every 20 fish caught = .1% (1/20k)"
 	)
 	default boolean showTenchChance() {
 		return true; // Adjust default value as needed
