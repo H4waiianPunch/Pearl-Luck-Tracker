@@ -7,6 +7,7 @@ import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
+import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
@@ -25,6 +26,9 @@ public class AerialFishingPlugin extends Plugin
 
 	@Inject
 	private Client client;
+
+	@Inject
+	private ClientThread clientThread;
 
 	@Inject
 	private AerialFishingOverlay overlay;
@@ -49,7 +53,25 @@ public class AerialFishingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		log.info("Aerial Fishing Tracker started!");
-		overlayManager.add(overlay);
+
+		// Run the code on the client thread to avoid concurrency issues
+		clientThread.invoke(() ->
+		{
+			// Access the equipment container
+			ItemContainer equipment = client.getItemContainer(InventoryID.EQUIPMENT);
+
+			if (equipment != null)
+			{
+				// Check the weapon slot for an equipped item
+				Item weaponItem = equipment.getItem(WEAPON_SLOT);
+				if (weaponItem != null && (weaponItem.getId() == ITEM_ID_1 || weaponItem.getId() == ITEM_ID_2))
+				{
+					overlayManager.add(overlay);
+					overlayAdded = true;
+					log.debug("Bird equipped. Overlay added.");
+				}
+			}
+		});
 	}
 
 	@Override
@@ -59,6 +81,8 @@ public class AerialFishingPlugin extends Plugin
 		overlayManager.remove(overlay);
 		fishCaught = 0;
 		lastStreak = 0;
+		tenchProgress = 0;
+		overlay.setTenchChanceText("Tench Chance: 0.0%");
 	}
 
 	public void updateOverlay()
