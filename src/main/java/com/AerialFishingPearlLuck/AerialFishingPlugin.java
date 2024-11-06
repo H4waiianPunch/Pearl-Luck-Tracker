@@ -46,6 +46,9 @@ public class AerialFishingPlugin extends Plugin
 	private int dryStreak; // Will be loaded from config
 	private int lastStreak = 0;
 	private int tenchProgress = 0;
+	private int totalPearls;
+	private int totalTenchs;
+	private int bestStreak;
 
 	private boolean overlayAdded = false;
 
@@ -107,8 +110,6 @@ public class AerialFishingPlugin extends Plugin
 			updateOverlay();
 			log.debug("Overlay Updated");
 			log.debug("Fish caught: " + fishCaught + ", Golden Tench progress: " + tenchProgress);
-
-
 		}
 
 		// Molch Pearl collected
@@ -118,15 +119,36 @@ public class AerialFishingPlugin extends Plugin
 			if (fishCaught > dryStreak)
 			{
 				dryStreak = fishCaught;
+				updateOverlay();
+				log.info("Saved dryestStreak to profile: " + totalPearls);
 
 				// Update dryStreak to config for persistence
 				configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak); // add the value to the config dryStreak
 				log.debug("Saved dryestStreak to profile: " + dryStreak);
-			}
+				}
+
+			totalPearls++;
+			configManager.setRSProfileConfiguration("pearlluck", "totalPearls", totalPearls);
 			lastStreak = fishCaught; // Sets the last streak value to the fish caught value
+
+			if (bestStreak == 0 || fishCaught < bestStreak)
+			{
+				bestStreak = fishCaught;
+				updateOverlay();
+				configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak); // add the value to the config dryStreak
+			}
+
 			fishCaught = 0; // Reset the fish count after collecting a Molch Pearl
 			log.debug("Molch Pearl collected. Fish count reset.");
 		}
+
+		if (message.equals("<col=ef1020>The cormorant has brought you a very strange tench.</col>"))
+		{
+			totalTenchs++;
+			Integer savedTenchCount = configManager.getRSProfileConfiguration("pearlluck", "totalTenchs", Integer.class);
+		}
+
+
 	}
 
 	@Subscribe
@@ -161,6 +183,9 @@ public class AerialFishingPlugin extends Plugin
 					overlayAdded = true;
 					log.debug("Bird equipped. Overlay added.");
 					Integer savedDryStreak = configManager.getRSProfileConfiguration("pearlluck", "dryStreak", Integer.class);
+					Integer savedPearlCount = configManager.getRSProfileConfiguration("pearlluck", "totalPearls", Integer.class);
+					Integer savedTenchCount = configManager.getRSProfileConfiguration("pearlluck", "totalTenchs", Integer.class);
+					Integer savedBestStreak = configManager.getRSProfileConfiguration("pearlluck","bestStreak", Integer.class);
 				}
 			}
 			else if (overlayAdded)
@@ -189,6 +214,9 @@ public class AerialFishingPlugin extends Plugin
 	{
 		// Load dry streak from the config
 		Integer savedDryStreak = configManager.getRSProfileConfiguration("pearlluck", "dryStreak", Integer.class);
+		Integer savedPearlCount = configManager.getRSProfileConfiguration("pearlluck", "totalPearls", Integer.class);
+		Integer savedTenchCount = configManager.getRSProfileConfiguration("pearlluck", "totalTenchs", Integer.class);
+		Integer savedBestStreak = configManager.getRSProfileConfiguration("pearlluck","bestStreak", Integer.class);
 
 		// Check if savedDryStreak is null
 		if (savedDryStreak == null) {
@@ -198,6 +226,11 @@ public class AerialFishingPlugin extends Plugin
 		} else {
 			dryStreak = savedDryStreak; // Load existing value
 			log.debug("Loaded dryStreak from profile: " + dryStreak);
+			totalTenchs = savedTenchCount;
+			log.info("Loaded totalTenchs from profile: " + totalTenchs);
+			totalPearls = savedPearlCount;
+			log.info("Loaded totalPearls from profile: " + totalPearls);
+			bestStreak = savedBestStreak;
 		}
 	}
 
@@ -234,9 +267,24 @@ public class AerialFishingPlugin extends Plugin
 		return dryStreak;
 	}
 
+	public int getTotalPearls()
+	{
+		return totalPearls;
+	}
+
+	public int getTotalTenchs()
+	{
+		return totalTenchs;
+	}
+
 	public int getLastStreak()
 	{
 		return lastStreak;
+	}
+
+	public int getBestStreak()
+	{
+		return bestStreak;
 	}
 
 	public int getTenchChance()

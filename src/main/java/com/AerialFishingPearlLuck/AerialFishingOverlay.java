@@ -31,22 +31,73 @@ public class AerialFishingOverlay extends Overlay
         panelComponent.getChildren().clear(); // Clear previous render
 
         // Add the current number of fish caught to the overlay
-        panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Fish Caught: " + plugin.getFishCaught())
-                .color(Color.WHITE) // You can adjust the color
-                .build());
+        if (plugin.getConfig().fishCaught()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Fish Caught: " + plugin.getFishCaught())
+                    .color(Color.WHITE) // You can adjust the color
+                    .build());
+        }
 
         // Add the last number of fish caught before getting a Pearl
-        panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Last Pearl: " + plugin.getLastStreak())
-                .color(Color.WHITE) // Color can be adjusted
-                .build());
+        if (plugin.getConfig().lastPearl()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Last Pearl: " + plugin.getLastStreak())
+                    .color(Color.WHITE) // Color can be adjusted
+                    .build());
+        }
+
+        switch (plugin.getConfig().pearlRate()){
+            case None:
+                panelComponent.getChildren().remove(TitleComponent.builder()
+                        .text("FishCaught/PearlsGained")
+                        .color(Color.WHITE)
+                        .build());
+                break;
+
+            case FishCaughtPearlsGained:
+                panelComponent.getChildren().add(TitleComponent.builder()
+                        .text("Pearl Rate: " + "FishxPearl")
+                        .color(Color.WHITE)
+                        .build());
+                break;
+
+            case WikiCalc:
+                panelComponent.getChildren().add(TitleComponent.builder()
+                        .text("Pearl Rate: " + "Wiki Calc")
+                        .color(Color.WHITE)
+                        .build());
+                break;
+        }
+
+        if (plugin.getConfig().totalPearls()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Pearl Count: " + plugin.getTotalPearls())
+                    .color(Color.WHITE)
+                    .build());
+        }
 
         // Add the highest streak (most fish caught before a Molch Pearl)
-        panelComponent.getChildren().add(TitleComponent.builder()
-                .text("Longest Dry: " + plugin.getDryStreak())
-                .color(Color.YELLOW)
-                .build());
+        if (plugin.getConfig().dryStreak()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Longest Dry: " + plugin.getDryStreak())
+                    .color(Color.YELLOW)
+                    .build());
+        }
+
+        if (plugin.getConfig().bestStreak()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Best Streak: " + plugin.getBestStreak())
+                    .color(Color.YELLOW)
+                    .build());
+    }
+        if (plugin.getConfig().totalTench()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("G.Tench Count: " + plugin.getTotalTenchs())
+                    .color(Color.PINK)
+                    .build());
+        }
+
+
 
         // % chance for tench in session
         if (plugin.getConfig().showTenchChance())
@@ -56,6 +107,8 @@ public class AerialFishingOverlay extends Overlay
                     .color(Color.PINK)
                     .build());
         }
+
+
 
         return panelComponent.render(graphics);
     }
