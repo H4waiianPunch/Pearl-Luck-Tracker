@@ -38,11 +38,25 @@ public class AerialFishingOverlay extends Overlay
                     .build());
         }
 
+        if (plugin.getConfig().totalFishCaught()){
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Total Fish: " + plugin.getTotalFishCaught())
+                    .color(Color.WHITE)
+                    .build());
+        }
+
         // Add the last number of fish caught before getting a Pearl
         if (plugin.getConfig().lastPearl()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Last Pearl: " + plugin.getLastStreak())
                     .color(Color.WHITE) // Color can be adjusted
+                    .build());
+        }
+
+        if (plugin.getConfig().totalPearls()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Pearl Count: " + plugin.getTotalPearls())
+                    .color(Color.WHITE)
                     .build());
         }
 
@@ -56,7 +70,7 @@ public class AerialFishingOverlay extends Overlay
 
             case FishCaughtPearlsGained:
                 panelComponent.getChildren().add(TitleComponent.builder()
-                        .text("Pearl Rate: " + "FishxPearl")
+                        .text("Pearl Rate: 1/" + plugin.getFishCaughtPearlCaught())
                         .color(Color.WHITE)
                         .build());
                 break;
@@ -69,13 +83,6 @@ public class AerialFishingOverlay extends Overlay
                 break;
         }
 
-        if (plugin.getConfig().totalPearls()) {
-            panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Pearl Count: " + plugin.getTotalPearls())
-                    .color(Color.WHITE)
-                    .build());
-        }
-
         // Add the highest streak (most fish caught before a Molch Pearl)
         if (plugin.getConfig().dryStreak()) {
             panelComponent.getChildren().add(TitleComponent.builder()
@@ -86,13 +93,13 @@ public class AerialFishingOverlay extends Overlay
 
         if (plugin.getConfig().bestStreak()) {
             panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Best Streak: " + plugin.getBestStreak())
+                    .text("Biggest Spoon: " + plugin.getBestStreak())
                     .color(Color.YELLOW)
                     .build());
     }
         if (plugin.getConfig().totalTench()) {
             panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("G.Tench Count: " + plugin.getTotalTenchs())
+                    .text("Tench Count: " + plugin.getTotalTenchs())
                     .color(Color.PINK)
                     .build());
         }

@@ -45,6 +45,13 @@ public interface AerialFishingConfig extends Config
 	default boolean fishCaught(){return true;}
 
 	@ConfigItem(
+			keyName = "totalFishCaught",
+			name = "Total Fish Caught",
+			description = "Tracks the total fish caught this session"
+	)
+	default boolean totalFishCaught(){return true;}
+
+	@ConfigItem(
 			keyName = "lastPearl",
 			name = "Last Pearl",
 			description = "Show the number of fish caught for the last pearl."
