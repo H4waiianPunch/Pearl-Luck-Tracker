@@ -30,6 +30,13 @@ public class AerialFishingOverlay extends Overlay
     {
         panelComponent.getChildren().clear(); // Clear previous render
 
+        if (plugin.getConfig().totalFishCaught()){
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Total Fish: " + plugin.getTotalFishCaught())
+                    .color(Color.WHITE)
+                    .build());
+        }
+
         // Add the current number of fish caught to the overlay
         if (plugin.getConfig().fishCaught()) {
             panelComponent.getChildren().add(TitleComponent.builder()
@@ -38,49 +45,44 @@ public class AerialFishingOverlay extends Overlay
                     .build());
         }
 
-        if (plugin.getConfig().totalFishCaught()){
-            panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Total Fish: " + plugin.getTotalFishCaught())
-                    .color(Color.WHITE)
-                    .build());
-        }
-
         // Add the last number of fish caught before getting a Pearl
         if (plugin.getConfig().lastPearl()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Last Pearl: " + plugin.getLastStreak())
-                    .color(Color.WHITE) // Color can be adjusted
+                    .color(Color.LIGHT_GRAY) // Color can be adjusted
                     .build());
         }
 
-        if (plugin.getConfig().totalPearls()) {
-            panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Pearl Count: " + plugin.getTotalPearls())
-                    .color(Color.WHITE)
-                    .build());
-        }
+
 
         switch (plugin.getConfig().pearlRate()){
             case None:
                 panelComponent.getChildren().remove(TitleComponent.builder()
                         .text("FishCaught/PearlsGained")
-                        .color(Color.WHITE)
+                        .color(Color.LIGHT_GRAY)
                         .build());
                 break;
 
             case FishCaughtPearlsGained:
                 panelComponent.getChildren().add(TitleComponent.builder()
                         .text("Pearl Rate: 1/" + plugin.getFishCaughtPearlCaught())
-                        .color(Color.WHITE)
+                        .color(Color.LIGHT_GRAY)
                         .build());
                 break;
 
             case WikiCalc:
                 panelComponent.getChildren().add(TitleComponent.builder()
                         .text("Pearl Rate: " + "Wiki Calc")
-                        .color(Color.WHITE)
+                        .color(Color.LIGHT_GRAY)
                         .build());
                 break;
+        }
+
+        if (plugin.getConfig().totalPearls()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Pearl Count: " + plugin.getTotalPearls())
+                    .color(Color.LIGHT_GRAY)
+                    .build());
         }
 
         // Add the highest streak (most fish caught before a Molch Pearl)
@@ -107,8 +109,7 @@ public class AerialFishingOverlay extends Overlay
 
 
         // % chance for tench in session
-        if (plugin.getConfig().showTenchChance())
-        {
+        if (plugin.getConfig().showTenchChance()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text(tenchChanceText)
                     .color(Color.PINK)

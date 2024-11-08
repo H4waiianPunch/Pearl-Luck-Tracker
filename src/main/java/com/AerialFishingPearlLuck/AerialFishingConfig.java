@@ -7,16 +7,6 @@ import net.runelite.client.config.ConfigItem;
 @ConfigGroup("pearlluck")
 public interface AerialFishingConfig extends Config
 {
-//	@ConfigItem(
-//		keyName = "randommessage",
-//		name = "Don't hover me please",
-//		description = "Oh come on, I even asked nicely!"
-//	)
-//	default String randommessage()
-//	{
-//		return "What are those capybara up to...";
-//	}
-
 	@ConfigItem(
 			keyName = "pearlRate",
 			name = "Pearl Rate",
@@ -35,28 +25,28 @@ public interface AerialFishingConfig extends Config
 			description = "The least number of fish caught for a pearl.",
 			hidden = false
 	)
-	default boolean bestStreak(){return true;}
+	default boolean bestStreak() {return true;}
 
 	@ConfigItem(
 			keyName = "fishCaught",
 			name = "Fish caught",
 			description = "Shows the fish caught in this session."
 	)
-	default boolean fishCaught(){return true;}
+	default boolean fishCaught() {return true;}
 
 	@ConfigItem(
 			keyName = "totalFishCaught",
 			name = "Total Fish Caught",
 			description = "Tracks the total fish caught this session"
 	)
-	default boolean totalFishCaught(){return true;}
+	default boolean totalFishCaught() {return true;}
 
 	@ConfigItem(
 			keyName = "lastPearl",
 			name = "Last Pearl",
 			description = "Show the number of fish caught for the last pearl."
 	)
-	default boolean lastPearl(){return true;}
+	default boolean lastPearl() {return true;}
 
 	@ConfigItem(
 			keyName = "showTenchChance",
@@ -73,7 +63,7 @@ public interface AerialFishingConfig extends Config
 			description = "The total number of Golden Tench you've caught.",
 			hidden = false
 	)
-	default boolean totalTench(){return true;}
+	default boolean totalTench() {return true;}
 
 	@ConfigItem(
 			keyName = "totalPearls",
@@ -81,7 +71,7 @@ public interface AerialFishingConfig extends Config
 			description = "This is the total number of pearls gained",
 			hidden = false
 	)
-	default boolean totalPearls(){return true;}
+	default boolean totalPearls() {return true;}
 
 	@ConfigItem(
 			keyName = "dryStreak",
