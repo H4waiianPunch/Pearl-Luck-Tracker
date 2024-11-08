@@ -78,9 +78,16 @@ public class AerialFishingOverlay extends Overlay
                 break;
         }
 
+        if (plugin.getConfig().sessionPearls()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Session Pearls: " + plugin.getSessionPearls())
+                    .color(Color.LIGHT_GRAY)
+                    .build());
+        }
+
         if (plugin.getConfig().totalPearls()) {
             panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Pearl Count: " + plugin.getTotalPearls())
+                    .text("Total Pearls: " + plugin.getTotalPearls())
                     .color(Color.LIGHT_GRAY)
                     .build());
         }
@@ -101,7 +108,7 @@ public class AerialFishingOverlay extends Overlay
     }
         if (plugin.getConfig().totalTench()) {
             panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Tench Count: " + plugin.getTotalTenchs())
+                    .text("Total Tench: " + plugin.getTotalTenchs())
                     .color(Color.PINK)
                     .build());
         }

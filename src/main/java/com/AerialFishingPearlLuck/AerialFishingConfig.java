@@ -74,6 +74,14 @@ public interface AerialFishingConfig extends Config
 	default boolean totalPearls() {return true;}
 
 	@ConfigItem(
+			keyName = "sessionPearls",
+			name = "Session Pearls",
+			description = "Enable to see the total pearls caught this session"
+	)
+
+	default boolean sessionPearls() {return true;}
+
+	@ConfigItem(
 			keyName = "dryStreak",
 			name = "Worst Streak",
 			description = "The most number of fish caught for a pearl.",
