@@ -230,9 +230,6 @@ public class AerialFishingPlugin extends Plugin
 		if (event.getGameState() == GameState.LOGGED_IN) {
 			// User has logged in, now we load the profile
 			loadProfileData();
-			double pearlWikiCalc = pearlRateWikiCalc();
-			log.info("Pearl Rate Calc: 1/" + Math.round(1 / pearlWikiCalc));
-			//loadSkillData();
 		}
 	}
 
@@ -240,20 +237,23 @@ public class AerialFishingPlugin extends Plugin
 
 	public double pearlRateWikiCalc()
 	{
+		log.info("4");
 		if (client == null)
-		{log.warn("Client not initialized.");
-			return -1;}
+		{
+			log.warn("Client not initialized.");
+			return -1;
+		}
 
 		// Get the users fishing and hunter levels
-		levelFishing = client.getRealSkillLevel(Skill.FISHING);
-		levelHunter = client.getRealSkillLevel(Skill.HUNTER);
+		//levelFishing = client.getRealSkillLevel(Skill.FISHING);
+		//levelHunter = client.getRealSkillLevel(Skill.HUNTER);
 
 		log.info ("Fishing Level: " + levelFishing);
 		log.info ("Hunter Level: " + levelHunter);
 
 		if (levelFishing == 0 || levelHunter == 0)
 		{
-			//log.warn("Fishing or hunter is 0, which means something's fucked");
+			log.warn("Fishing or hunter is 0, which means something's fucked");
 			return -1;
 		}
 
@@ -263,17 +263,22 @@ public class AerialFishingPlugin extends Plugin
 
 		log.info ("Rate=1/" + Math.round(1/ pearlWikiCalc));
 		return pearlWikiCalc;
+
     }
 
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
+		//log.info("1");
 		if (doFetchSkillLevels)
 		{
+			//log.info("2");
 			if (loadSkillData())
 			{
+				//log.info("3");
 				doFetchSkillLevels = false;
 				pearlRateWikiCalc();
+
 			}
 		}
 	}
@@ -354,10 +359,10 @@ public class AerialFishingPlugin extends Plugin
 		return fishCaught;
 	}
 
-	public double getPearlWikiCalc()
+	/*public double getPearlWikiCalc()
 	{
 		return pearlWikiCalc;
-	}
+	}*/
 
 	public int getTotalFishCaught()
 	{
