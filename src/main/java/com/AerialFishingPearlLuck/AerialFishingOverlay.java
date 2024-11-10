@@ -130,10 +130,10 @@ public class AerialFishingOverlay extends Overlay
     }
 
     // Add this method to set the Tench chance text
-    public void setTenchChanceText(String text)
+   /* public void setTenchChanceText(String text)
     {
         this.tenchChanceText = text;
-    }
+    }*/
 
     public void updateOverlay()
     {

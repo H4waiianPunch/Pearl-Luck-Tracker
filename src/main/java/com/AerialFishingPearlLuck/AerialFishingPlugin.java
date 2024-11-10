@@ -8,7 +8,6 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
-import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.events.ConfigChanged;
@@ -105,7 +104,7 @@ public class AerialFishingPlugin extends Plugin
 		sessionPearls = 0;
 		sessionFishCaught = 0;
 
-		overlay.setTenchChanceText("Tench Chance: 0.0%");
+		//overlay.setTenchChanceText("Tench Chance: 0.0%");
 	}
 
 	@Subscribe
@@ -160,7 +159,7 @@ public class AerialFishingPlugin extends Plugin
 	{
 		double tenchPercentage = (tenchProgress / 20) * 0.1;
 		String tenchPercentageFormatted = String.format("%.1f", tenchPercentage);
-		overlay.setTenchChanceText("Tench Chance: " + tenchPercentageFormatted + "%");
+		//overlay.setTenchChanceText("Tench Chance: " + tenchPercentageFormatted + "%");
 		log.debug("Current Golden Tench chance: " + tenchPercentageFormatted + "%");
 	}
 
@@ -177,6 +176,7 @@ public class AerialFishingPlugin extends Plugin
 			sessionFishCaught++; //adds +1 to the session fish counter to track FishxPearl rate
 			totalFishCaught++; // Adds +1 to the total fish caught for people that like to see it
 			configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
+			double tenchChance = calculateGoldenTenchChance();
 
 			// Used to spoof the golden tench variable for testing
 			/*totalTenches++;
@@ -260,7 +260,7 @@ public class AerialFishingPlugin extends Plugin
 					lastStreak = 0;
 					sessionFishCaught = 0;
 					sessionPearls = 0;
-					overlay.setTenchChanceText("Tench Chance: 0.0%");
+			//		overlay.setTenchChanceText("Tench Chance: 0.0%");
 					log.debug("Values Reset");
 				}
 				else if ((weaponId == ITEM_ID_1 || weaponId == ITEM_ID_2) && !overlayAdded)
@@ -280,7 +280,7 @@ public class AerialFishingPlugin extends Plugin
 				lastStreak = 0;
 				sessionFishCaught = 0;
 				sessionPearls = 0;
-				overlay.setTenchChanceText("Tench Chance: 0.0%");
+			//	overlay.setTenchChanceText("Tench Chance: 0.0%");
 			}
 		}
 	}
@@ -342,11 +342,19 @@ public class AerialFishingPlugin extends Plugin
 
     }
 
-	public double getGoldenTenchChance(int sessionFishCaught) {
+	private double calculateGoldenTenchChance() {
+		if (sessionFishCaught <= 0) {
+			log.info("Tench chance: 0.0 (no fish caught yet)");
+			return 0.0;
+		}
+
 		double dropRate = 1.0 / 20000.0;
 		double noTenchProbability = 1 - dropRate;
-		double chanceToCatchAtLeastOneTench = 1 - Math.pow(noTenchProbability, sessionFishCaught);
-		return chanceToCatchAtLeastOneTench * 100; // Convert to percentage
+		double tenchChance = 1 - Math.pow(noTenchProbability, sessionFishCaught);
+
+		log.info("Calculated Tench chance with " + sessionFishCaught + " fish caught: " + (tenchChance * 100));
+
+		return tenchChance * 100; // Convert to percentage
 	}
 
 	@Subscribe
@@ -414,7 +422,7 @@ public class AerialFishingPlugin extends Plugin
 		return true;
 	}
 
-	public String getTenchChanceText()
+	/*public String getTenchChanceText()
 	{
 		final int tenchChance = 40000; // The chance of getting a Golden Tench (1/20000)
 
@@ -423,7 +431,7 @@ public class AerialFishingPlugin extends Plugin
 
 		// Format the percentage to 1 decimal place
 		return String.format("%.1f", tenchPercentage) + "%";
-	}
+	}*/
 
 	public AerialFishingConfig getConfig()
 	{
@@ -449,7 +457,7 @@ public class AerialFishingPlugin extends Plugin
 
 	public double getGoldenTenchChance()
 	{
-		return chanceToCatchAtLeastOneTench;
+		return calculateGoldenTenchChance();
 	}
 
 	public int getSessionFishCaught()
