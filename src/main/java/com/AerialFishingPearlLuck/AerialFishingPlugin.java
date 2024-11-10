@@ -8,8 +8,10 @@ import net.runelite.api.events.ChatMessage;
 import net.runelite.api.events.GameStateChanged;
 import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
+import net.runelite.client.config.Config;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
@@ -100,8 +102,57 @@ public class AerialFishingPlugin extends Plugin
 		tenchProgress = 0;
 		fishCaughtPearlCaught = 0;
 		sessionPearls = 0;
+		sessionFishCaught = 0;
 
 		overlay.setTenchChanceText("Tench Chance: 0.0%");
+	}
+
+	@Subscribe
+	protected void onConfigChanged(ConfigChanged configChanged) // This is used to reset the persistent values.
+	{
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (config.resetBestStreak())
+			{
+				bestStreak = 0;
+				log.info("Best Streak has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetBestStreak", false);
+				configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak);
+			}
+
+			if (config.resetDryStreak())
+			{
+				dryStreak = 0;
+				log.info("Dry Streak has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetDryStreak", false);
+				configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak);
+			}
+
+			if (config.resetTotalFish())
+			{
+				totalFishCaught = 0;
+				log.info("Total Fish has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetTotalFish", false);
+				configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
+			}
+
+			if (config.resetTotalPearls())
+			{
+				totalPearls = 0;
+				log.info("Total Pearls has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetTotalPearls", false);
+				configManager.setRSProfileConfiguration("pearlluck", "totalPearls", totalPearls);
+			}
+
+			if (config.resetTotalTench())
+			{
+				totalTenches = 0;
+				log.info("Total Tench has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetTotalTench", false);
+				configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);
+			}
+
+		}
 	}
 
 	public void updateOverlay()
@@ -182,6 +233,7 @@ public class AerialFishingPlugin extends Plugin
 
 	}
 
+
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
 	{
@@ -202,9 +254,11 @@ public class AerialFishingPlugin extends Plugin
 					overlayAdded = false;
 					log.debug("Bird not equipped. Overlay removed.");
 
-					// Reset stats when not using plugin - except dryStreak
+					// Reset stats
 					fishCaught = 0;
 					lastStreak = 0;
+					sessionFishCaught = 0;
+					sessionPearls = 0;
 					overlay.setTenchChanceText("Tench Chance: 0.0%");
 					log.debug("Values Reset");
 				}
@@ -223,6 +277,8 @@ public class AerialFishingPlugin extends Plugin
 				log.debug("Weapon slot is empty. Overlay removed.");
 				fishCaught = 0;
 				lastStreak = 0;
+				sessionFishCaught = 0;
+				sessionPearls = 0;
 				overlay.setTenchChanceText("Tench Chance: 0.0%");
 			}
 		}

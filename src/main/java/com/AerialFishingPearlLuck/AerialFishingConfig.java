@@ -48,6 +48,13 @@ public interface AerialFishingConfig extends Config
 	)
 	String streakSection = "streakSection";
 
+	@ConfigSection(
+			name = "Reset Settings",
+			description = "Reset your persistent stats here.",
+			position = 4
+	)
+	String resetSection = "resetSection";
+
 	@ConfigItem(
 			keyName = "bestStreak",
 			name = "Best Streak",
@@ -57,12 +64,53 @@ public interface AerialFishingConfig extends Config
 	default boolean bestStreak() {return true;}
 
 	@ConfigItem(
+			keyName = "resetBestStreak",
+			name = "Reset Best Streak",
+			description = "Resets your Best Streak value",
+			section = resetSection
+	)
+	default boolean resetBestStreak() { return false; }
+
+	@ConfigItem(
+			keyName = "resetDryStreak",
+			name = "Reset Dry Streak",
+			description = "Resets your Dry Streak value",
+			section = resetSection
+	)
+	default boolean resetDryStreak() { return false; }
+
+	@ConfigItem(
+			keyName = "resetTotalFish",
+			name = "Reset Total Fish",
+			description = "Resets your Total Fish Caught value",
+			section = resetSection
+	)
+	default boolean resetTotalFish() { return false; }
+
+	@ConfigItem(
+			keyName = "resetTotalPearls",
+			name = "Reset Total Pearls",
+			description = "Resets your Total Molch Pearls value",
+			section = resetSection
+	)
+	default boolean resetTotalPearls() { return false; }
+
+	@ConfigItem(
+			keyName = "resetTotalTench",
+			name = "Reset Total Tench",
+			description = "Resets your Total Golden Tench value",
+			section = resetSection
+	)
+	default boolean resetTotalTench() { return false; }
+
+	@ConfigItem(
 			keyName = "fishCaught",
 			name = "Fish caught",
 			description = "Shows the fish caught until you get a Molch Pearl.",
 			section = fishCaughtSection
 	)
 	default boolean fishCaught() {return true;}
+
 
 	@ConfigItem(
 			keyName = "sessionFishCaught",
