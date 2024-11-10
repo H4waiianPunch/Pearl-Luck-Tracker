@@ -61,7 +61,7 @@ public class AerialFishingPlugin extends Plugin
 	private int levelHunter;
 	private boolean doFetchSkillLevels = true;
 	private int totalFishCaught;
-	private double chanceToCatchAtLeastOneTench = 0;
+	private double tenchChance;
 
 
 	private boolean overlayAdded = false;
@@ -176,7 +176,7 @@ public class AerialFishingPlugin extends Plugin
 			sessionFishCaught++; //adds +1 to the session fish counter to track FishxPearl rate
 			totalFishCaught++; // Adds +1 to the total fish caught for people that like to see it
 			configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
-			double tenchChance = calculateGoldenTenchChance();
+			tenchChance = calculateGoldenTenchChance();
 
 			// Used to spoof the golden tench variable for testing
 			/*totalTenches++;
@@ -345,14 +345,14 @@ public class AerialFishingPlugin extends Plugin
 	private double calculateGoldenTenchChance() {
 		if (sessionFishCaught <= 0) {
 			log.info("Tench chance: 0.0 (no fish caught yet)");
-			return 0.0;
-		}
+			return 0.0;}
 
-		double dropRate = 1.0 / 20000.0;
-		double noTenchProbability = 1 - dropRate;
-		double tenchChance = 1 - Math.pow(noTenchProbability, sessionFishCaught);
+			double dropRate = 1.0 / 20000.0;
+			double noTenchProbability = 1 - dropRate;
+			double tenchChance = 1 - Math.pow(noTenchProbability, sessionFishCaught);
 
-		log.info("Calculated Tench chance with " + sessionFishCaught + " fish caught: " + (tenchChance * 100));
+			log.info("Calculated Tench chance with " + sessionFishCaught + " fish caught: " + (tenchChance * 100));
+
 
 		return tenchChance * 100; // Convert to percentage
 	}
@@ -505,8 +505,8 @@ public class AerialFishingPlugin extends Plugin
 		return sessionPearls;
 	}
 
-	public int getTenchChance()
+	/*public int getTenchChance()
 	{
 		return tenchProgress;
-	}
+	}*/
 }

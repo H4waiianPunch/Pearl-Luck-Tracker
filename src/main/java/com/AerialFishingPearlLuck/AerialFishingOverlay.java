@@ -14,7 +14,7 @@ public class AerialFishingOverlay extends Overlay
 {
     private final AerialFishingPlugin plugin;
     private final PanelComponent panelComponent = new PanelComponent();
-    private String tenchChanceText = "Tench Chance: 0.0%"; // Starts the Tench Chance at 0.0%
+    //private String tenchChanceText = "Tench Chance: 0.0%"; // Starts the Tench Chance at 0.0%
 
     @Inject
     public AerialFishingOverlay(AerialFishingPlugin plugin)
