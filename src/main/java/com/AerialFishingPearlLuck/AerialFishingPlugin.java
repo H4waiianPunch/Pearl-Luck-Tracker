@@ -62,6 +62,7 @@ public class AerialFishingPlugin extends Plugin
 	private int levelHunter;
 	private boolean doFetchSkillLevels = true;
 	private int totalFishCaught;
+	private double chanceToCatchAtLeastOneTench = 0;
 
 
 	private boolean overlayAdded = false;
@@ -341,6 +342,13 @@ public class AerialFishingPlugin extends Plugin
 
     }
 
+	public double getGoldenTenchChance(int sessionFishCaught) {
+		double dropRate = 1.0 / 20000.0;
+		double noTenchProbability = 1 - dropRate;
+		double chanceToCatchAtLeastOneTench = 1 - Math.pow(noTenchProbability, sessionFishCaught);
+		return chanceToCatchAtLeastOneTench * 100; // Convert to percentage
+	}
+
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
@@ -437,6 +445,11 @@ public class AerialFishingPlugin extends Plugin
 	public double getPearlWikiCalc()
 	{
 		return pearlWikiCalc;
+	}
+
+	public double getGoldenTenchChance()
+	{
+		return chanceToCatchAtLeastOneTench;
 	}
 
 	public int getSessionFishCaught()

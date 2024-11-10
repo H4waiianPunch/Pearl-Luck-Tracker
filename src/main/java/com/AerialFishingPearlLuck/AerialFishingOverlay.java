@@ -110,9 +110,16 @@ public class AerialFishingOverlay extends Overlay
         }
 
         // % chance for tench in session
-        if (plugin.getConfig().showTenchChance()) {
+        /*if (plugin.getConfig().showTenchChance()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text(tenchChanceText)
+                    .color(Color.PINK)
+                    .build());
+        }*/
+
+        if (plugin.getConfig().showTenchChance()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Tench Chance: " + plugin.getGoldenTenchChance() + "%")
                     .color(Color.PINK)
                     .build());
         }
