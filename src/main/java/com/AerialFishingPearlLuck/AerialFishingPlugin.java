@@ -15,6 +15,7 @@ import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.api.Skill;
 import net.runelite.api.events.GameTick;
+import net.runelite.api.events.StatChanged;
 
 @Slf4j
 @PluginDescriptor(
@@ -235,7 +236,18 @@ public class AerialFishingPlugin extends Plugin
 		}
 	}
 
+	@Subscribe
+	public void onStatChanged(StatChanged event) { // This should fire
+		Skill skill = event.getSkill();
 
+		//Only call loadSkillData if the level is fishing or hunter
+		if (skill == Skill.FISHING || skill == Skill.HUNTER) {
+			boolean success = loadSkillData();
+			if (!success) {
+				log.info("Failed to load skill data, retrying next tick");
+			}
+		}
+	}
 
 	public double pearlRateWikiCalc()
 	{
