@@ -62,7 +62,7 @@ public class AerialFishingOverlay extends Overlay
 
         if (plugin.getConfig().wikiPearlRate()) {
             panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Wiki Rate: 1/" + plugin.getPearlWikiCalc())
+                    .text("Wiki Rate: 1/" + plugin.pearlRateWikiCalc())
                     .color(Color.LIGHT_GRAY)
                     .build());
         }

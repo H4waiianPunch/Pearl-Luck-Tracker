@@ -14,6 +14,7 @@ import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
 import net.runelite.api.Skill;
+import net.runelite.api.events.GameTick;
 
 @Slf4j
 @PluginDescriptor(
@@ -54,8 +55,9 @@ public class AerialFishingPlugin extends Plugin
 	private int fishCaughtPearlCaught = 0;
 	private int totalFishCaught;
 	private double pearlWikiCalc;
-	//private int levelFishing;
-	//private int levelHunter;
+	private int levelFishing;
+	private int levelHunter;
+	private boolean doFetchSkillLevels = true;
 
 
 	private boolean overlayAdded = false;
@@ -224,17 +226,17 @@ public class AerialFishingPlugin extends Plugin
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
+	public void onGameStateChanged(GameStateChanged event) throws InterruptedException {
+		if (event.getGameState() == GameState.LOGGED_IN) {
 			// User has logged in, now we load the profile
 			loadProfileData();
-			//double pearlWikiCalc = pearlRateWikiCalc();
-			log.info("Pearl Rate Calc: 1/" + Math.round(1 /pearlWikiCalc));
-			loadskilldata();
+			double pearlWikiCalc = pearlRateWikiCalc();
+			log.info("Pearl Rate Calc: 1/" + Math.round(1 / pearlWikiCalc));
+			//loadSkillData();
 		}
 	}
+
+
 
 	public double pearlRateWikiCalc()
 	{
@@ -243,8 +245,8 @@ public class AerialFishingPlugin extends Plugin
 			return -1;}
 
 		// Get the users fishing and hunter levels
-		int levelFishing = client.getRealSkillLevel(Skill.FISHING);
-		int levelHunter = client.getRealSkillLevel(Skill.HUNTER);
+		levelFishing = client.getRealSkillLevel(Skill.FISHING);
+		levelHunter = client.getRealSkillLevel(Skill.HUNTER);
 
 		log.info ("Fishing Level: " + levelFishing);
 		log.info ("Hunter Level: " + levelHunter);
@@ -257,11 +259,24 @@ public class AerialFishingPlugin extends Plugin
 
 		// calculate the X value for the equation
 		double X = (levelFishing * 2 + levelHunter) / 3.0;
-		double pearlWikiCalc = 1 / (100 - ((X-40) * 25 / 59));
+		pearlWikiCalc = 1 / (100 - ((X-40) * 25 / 59));
 
 		log.info ("Rate=1/" + Math.round(1/ pearlWikiCalc));
 		return pearlWikiCalc;
     }
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		if (doFetchSkillLevels)
+		{
+			if (loadSkillData())
+			{
+				doFetchSkillLevels = false;
+				pearlRateWikiCalc();
+			}
+		}
+	}
 
 	private void loadProfileData()
 	{
@@ -294,15 +309,21 @@ public class AerialFishingPlugin extends Plugin
 		totalPearls = savedPearlCount;
 		log.info("Loaded totalPearls from profile: " + totalPearls);
 		bestStreak = savedBestStreak;
-
-		pearlRateWikiCalc();
 	}
 
-	private void loadskilldata(){
-		int levelFishing = client.getRealSkillLevel(Skill.FISHING);
+	private boolean loadSkillData(){
+		levelFishing = client.getRealSkillLevel(Skill.FISHING);
+		levelHunter = client.getRealSkillLevel(Skill.HUNTER);
 		log.info(String.valueOf(levelFishing));
-		int levelHunter = client.getRealSkillLevel(Skill.HUNTER);
 		log.info(String.valueOf(levelHunter));
+
+		if (levelFishing == 0 || levelHunter == 0)
+		{
+			log.warn("Fishing or hunter level is 0,retrying next tick.");
+			return false;
+		}
+		log.info("Loaded fishing and hunter levels");
+		return true;
 	}
 
 	public String getTenchChanceText()
