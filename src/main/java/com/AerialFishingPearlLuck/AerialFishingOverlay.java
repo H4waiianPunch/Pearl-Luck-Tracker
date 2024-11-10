@@ -37,6 +37,13 @@ public class AerialFishingOverlay extends Overlay
                     .build());
         }
 
+        if (plugin.getConfig().sessionFishCaught()){
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Session Fish: " + plugin.getSessionFishCaught())
+                    .color(Color.WHITE)
+                    .build());
+        }
+
         // Add the current number of fish caught to the overlay
         if (plugin.getConfig().fishCaught()) {
             panelComponent.getChildren().add(TitleComponent.builder()
@@ -53,20 +60,6 @@ public class AerialFishingOverlay extends Overlay
                     .build());
         }
 
-        if (plugin.getConfig().actualPearlRate()) {
-            panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Actual Rate: 1/" + plugin.getFishCaughtPearlCaught())
-                    .color(Color.LIGHT_GRAY)
-                    .build());
-        }
-
-        if (plugin.getConfig().wikiPearlRate()) {
-            panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Wiki Rate: 1/" + (int) Math.floor(1 / plugin.getPearlWikiCalc()))
-                    .color(Color.LIGHT_GRAY)
-                    .build());
-        }
-
         if (plugin.getConfig().sessionPearls()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Session Pearls: " + plugin.getSessionPearls())
@@ -77,6 +70,20 @@ public class AerialFishingOverlay extends Overlay
         if (plugin.getConfig().totalPearls()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Total Pearls: " + plugin.getTotalPearls())
+                    .color(Color.LIGHT_GRAY)
+                    .build());
+        }
+
+        if (plugin.getConfig().actualPearlRate()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Actual Rate: 1/" + plugin.getFishCaughtPearlCaught())
+                    .color(Color.LIGHT_GRAY)
+                    .build());
+        }
+
+        if (plugin.getConfig().wikiPearlRate()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Wiki Rate: 1/" + (int) Math.floor(1 / plugin.getPearlWikiCalc()))
                     .color(Color.LIGHT_GRAY)
                     .build());
         }

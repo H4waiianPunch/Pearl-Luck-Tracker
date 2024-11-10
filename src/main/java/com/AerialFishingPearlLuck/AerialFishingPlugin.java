@@ -53,11 +53,12 @@ public class AerialFishingPlugin extends Plugin
 	private int totalTenches;
 	private int bestStreak;
 	private int fishCaughtPearlCaught = 0;
-	private int totalFishCaught;
+	private int sessionFishCaught;
 	private double pearlWikiCalc;
 	private int levelFishing;
 	private int levelHunter;
 	private boolean doFetchSkillLevels = true;
+	private int totalFishCaught;
 
 
 	private boolean overlayAdded = false;
@@ -96,7 +97,6 @@ public class AerialFishingPlugin extends Plugin
 		fishCaught = 0;
 		lastStreak = 0;
 		tenchProgress = 0;
-		//totalPearls = 0;
 		fishCaughtPearlCaught = 0;
 		sessionPearls = 0;
 
@@ -121,7 +121,9 @@ public class AerialFishingPlugin extends Plugin
 		{
 			fishCaught++; // add +1 to the counter
 			tenchProgress++; // add +1 to the fish caught towards golden tench
-			totalFishCaught++; //adds +1 to the total fish counter to track FishxPearl rate
+			sessionFishCaught++; //adds +1 to the session fish counter to track FishxPearl rate
+			totalFishCaught++; // Adds +1 to the total fish caught for people that like to see it
+			configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
 
 			// Used to spoof the golden tench variable for testing
 			/*totalTenches++;
@@ -161,7 +163,7 @@ public class AerialFishingPlugin extends Plugin
 			}
 
 			if (totalPearls > 0) {
-				fishCaughtPearlCaught = totalFishCaught / sessionPearls;
+				fishCaughtPearlCaught = sessionFishCaught / sessionPearls;
 			} else {
 				fishCaughtPearlCaught = 0;
 			}
@@ -295,6 +297,7 @@ public class AerialFishingPlugin extends Plugin
 		Integer savedPearlCount = configManager.getRSProfileConfiguration("pearlluck", "totalPearls", Integer.class);
 		Integer savedTenchCount = configManager.getRSProfileConfiguration("pearlluck", "totalTench", Integer.class);
 		Integer savedBestStreak = configManager.getRSProfileConfiguration("pearlluck","bestStreak", Integer.class);
+		Integer savedTotalFish = configManager.getRSProfileConfiguration("pearlluck", "totalFishCaught", Integer.class);
 
 		// Check if savedDryStreak is null
 		if (savedDryStreak == null) {
@@ -319,6 +322,7 @@ public class AerialFishingPlugin extends Plugin
 		totalPearls = savedPearlCount;
 		log.debug("Loaded totalPearls from profile: " + totalPearls);
 		bestStreak = savedBestStreak;
+		totalFishCaught = savedTotalFish;
 	}
 
 	private boolean loadSkillData(){
@@ -365,6 +369,11 @@ public class AerialFishingPlugin extends Plugin
 	public double getPearlWikiCalc()
 	{
 		return pearlWikiCalc;
+	}
+
+	public int getSessionFishCaught()
+	{
+		return sessionFishCaught;
 	}
 
 	public int getTotalFishCaught()

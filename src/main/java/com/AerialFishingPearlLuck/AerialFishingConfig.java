@@ -51,7 +51,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "bestStreak",
 			name = "Best Streak",
-			description = "The least number of fish caught for a pearl.",
+			description = "The least number of fish caught for a Molch Pearl.",
 			section = streakSection
 	)
 	default boolean bestStreak() {return true;}
@@ -59,18 +59,26 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "fishCaught",
 			name = "Fish caught",
-			description = "Shows the fish caught in this session.",
+			description = "Shows the fish caught until you get a Molch Pearl.",
 			section = fishCaughtSection
 	)
 	default boolean fishCaught() {return true;}
 
 	@ConfigItem(
-			keyName = "totalFishCaught",
-			name = "Total Fish Caught",
+			keyName = "sessionFishCaught",
+			name = "Total Session Fish Caught",
 			description = "Tracks the total fish caught this session",
 			section = fishCaughtSection
 	)
-	default boolean totalFishCaught() {return true;}
+	default boolean sessionFishCaught() {return true;}
+
+	@ConfigItem(
+			keyName = "totalFishCaught",
+			name = "Total Fish Caught",
+			description = "Tracks the lifetime total number of fish caught while Aerial Fishing",
+			section = fishCaughtSection
+	)
+	default boolean totalFishCaught(){return true;}
 
 	@ConfigItem(
 			keyName = "lastPearl",
@@ -101,7 +109,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "actualPearlRate",
 			name = "Actual Pearl Rate",
-			description ="Shows that actual Pearl rate, as calculated by fish caught / pearls caught",
+			description ="Shows your actual Pearl rate, as calculated by fish caught / pearls caught",
 			section = pearlSection
 	)
 	default boolean actualPearlRate(){return true;}
@@ -135,7 +143,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "dryStreak",
 			name = "Worst Streak",
-			description = "The most number of fish caught for a pearl.",
+			description = "The most number of fish caught for a Molch Pearl.",
 			section = streakSection
 	)
 	default boolean dryStreak() {return true;}
