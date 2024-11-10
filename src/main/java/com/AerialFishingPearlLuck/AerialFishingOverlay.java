@@ -53,14 +53,26 @@ public class AerialFishingOverlay extends Overlay
                     .build());
         }
 
+        if (plugin.getConfig().actualPearlRate()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Actual Rate: 1/" + plugin.getFishCaughtPearlCaught())
+                    .color(Color.LIGHT_GRAY)
+                    .build());
+        }
 
+        if (plugin.getConfig().wikiPearlRate()) {
+            panelComponent.getChildren().add(TitleComponent.builder()
+                    .text("Wiki Rate: 1/" + plugin.getPearlWikiCalc())
+                    .color(Color.LIGHT_GRAY)
+                    .build());
+        }
 
-        switch (plugin.getConfig().pearlRate()){
+        /*switch (plugin.getConfig().pearlRate()) {
             case None:
                 panelComponent.getChildren().remove(TitleComponent.builder()
-                        .text("FishCaught/PearlsGained")
-                        .color(Color.LIGHT_GRAY)
-                        .build());
+                        .text("FishCaught/PearlsGained") //idk why this needs to be here still
+                        .color(Color.LIGHT_GRAY) //idk why this needs to be here still
+                        .build()); //idk why this needs to be here still
                 break;
 
             case FishCaughtPearlsGained:
@@ -71,12 +83,16 @@ public class AerialFishingOverlay extends Overlay
                 break;
 
             case WikiCalc:
-                panelComponent.getChildren().add(TitleComponent.builder()
-                        .text("Pearl Rate: " + "Wiki Calc")
-                        .color(Color.LIGHT_GRAY)
-                        .build());
-                break;
-        }
+                double pearlRate = plugin.getPearlWikiCalc();
+                if (pearlRate != -1) {
+                    long roundedRate = Math.round(1 / pearlRate);
+                    panelComponent.getChildren().add(TitleComponent.builder()
+                            .text("Pearl Rate: " + roundedRate)
+                            .color(Color.LIGHT_GRAY)
+                            .build());
+                    break;
+                }
+        }*/
 
         if (plugin.getConfig().sessionPearls()) {
             panelComponent.getChildren().add(TitleComponent.builder()
@@ -132,5 +148,10 @@ public class AerialFishingOverlay extends Overlay
     public void setTenchChanceText(String text)
     {
         this.tenchChanceText = text;
+    }
+
+    public void updateOverlay()
+    {
+
     }
 }

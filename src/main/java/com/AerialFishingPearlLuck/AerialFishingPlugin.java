@@ -13,6 +13,7 @@ import net.runelite.client.eventbus.Subscribe;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.api.Skill;
 
 @Slf4j
 @PluginDescriptor(
@@ -52,6 +53,9 @@ public class AerialFishingPlugin extends Plugin
 	private int bestStreak;
 	private int fishCaughtPearlCaught = 0;
 	private int totalFishCaught;
+	private double pearlWikiCalc;
+	//private int levelFishing;
+	//private int levelHunter;
 
 
 	private boolean overlayAdded = false;
@@ -60,6 +64,7 @@ public class AerialFishingPlugin extends Plugin
 	protected void startUp() throws Exception
 	{
 		log.info("Aerial Fishing Tracker started!");
+
 
 		// Run the code on the client thread to avoid concurrency issues
 		clientThread.invoke(() ->
@@ -225,8 +230,38 @@ public class AerialFishingPlugin extends Plugin
 		{
 			// User has logged in, now we load the profile
 			loadProfileData();
+			//double pearlWikiCalc = pearlRateWikiCalc();
+			log.info("Pearl Rate Calc: 1/" + Math.round(1 /pearlWikiCalc));
+			loadskilldata();
 		}
 	}
+
+	public double pearlRateWikiCalc()
+	{
+		if (client == null)
+		{log.warn("Client not initialized.");
+			return -1;}
+
+		// Get the users fishing and hunter levels
+		int levelFishing = client.getRealSkillLevel(Skill.FISHING);
+		int levelHunter = client.getRealSkillLevel(Skill.HUNTER);
+
+		log.info ("Fishing Level: " + levelFishing);
+		log.info ("Hunter Level: " + levelHunter);
+
+		if (levelFishing == 0 || levelHunter == 0)
+		{
+			//log.warn("Fishing or hunter is 0, which means something's fucked");
+			return -1;
+		}
+
+		// calculate the X value for the equation
+		double X = (levelFishing * 2 + levelHunter) / 3.0;
+		double pearlWikiCalc = 1 / (100 - ((X-40) * 25 / 59));
+
+		log.info ("Rate=1/" + Math.round(1/ pearlWikiCalc));
+		return pearlWikiCalc;
+    }
 
 	private void loadProfileData()
 	{
@@ -260,7 +295,14 @@ public class AerialFishingPlugin extends Plugin
 		log.info("Loaded totalPearls from profile: " + totalPearls);
 		bestStreak = savedBestStreak;
 
-		//log.info("totaltench at end" + savedTenchCount);
+		pearlRateWikiCalc();
+	}
+
+	private void loadskilldata(){
+		int levelFishing = client.getRealSkillLevel(Skill.FISHING);
+		log.info(String.valueOf(levelFishing));
+		int levelHunter = client.getRealSkillLevel(Skill.HUNTER);
+		log.info(String.valueOf(levelHunter));
 	}
 
 	public String getTenchChanceText()
@@ -289,6 +331,11 @@ public class AerialFishingPlugin extends Plugin
 	public int getFishCaught()
 	{
 		return fishCaught;
+	}
+
+	public double getPearlWikiCalc()
+	{
+		return pearlWikiCalc;
 	}
 
 	public int getTotalFishCaught()
