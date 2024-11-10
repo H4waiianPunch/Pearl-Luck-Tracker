@@ -62,37 +62,10 @@ public class AerialFishingOverlay extends Overlay
 
         if (plugin.getConfig().wikiPearlRate()) {
             panelComponent.getChildren().add(TitleComponent.builder()
-                    .text("Wiki Rate: 1/" + plugin.pearlRateWikiCalc())
+                    .text("Wiki Rate: 1/" + (int) Math.floor(1 / plugin.getPearlWikiCalc()))
                     .color(Color.LIGHT_GRAY)
                     .build());
         }
-
-        /*switch (plugin.getConfig().pearlRate()) {
-            case None:
-                panelComponent.getChildren().remove(TitleComponent.builder()
-                        .text("FishCaught/PearlsGained") //idk why this needs to be here still
-                        .color(Color.LIGHT_GRAY) //idk why this needs to be here still
-                        .build()); //idk why this needs to be here still
-                break;
-
-            case FishCaughtPearlsGained:
-                panelComponent.getChildren().add(TitleComponent.builder()
-                        .text("Pearl Rate: 1/" + plugin.getFishCaughtPearlCaught())
-                        .color(Color.LIGHT_GRAY)
-                        .build());
-                break;
-
-            case WikiCalc:
-                double pearlRate = plugin.getPearlWikiCalc();
-                if (pearlRate != -1) {
-                    long roundedRate = Math.round(1 / pearlRate);
-                    panelComponent.getChildren().add(TitleComponent.builder()
-                            .text("Pearl Rate: " + roundedRate)
-                            .color(Color.LIGHT_GRAY)
-                            .build());
-                    break;
-                }
-        }*/
 
         if (plugin.getConfig().sessionPearls()) {
             panelComponent.getChildren().add(TitleComponent.builder()
@@ -128,8 +101,6 @@ public class AerialFishingOverlay extends Overlay
                     .color(Color.PINK)
                     .build());
         }
-
-
 
         // % chance for tench in session
         if (plugin.getConfig().showTenchChance()) {

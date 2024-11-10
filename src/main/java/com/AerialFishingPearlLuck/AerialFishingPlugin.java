@@ -140,8 +140,8 @@ public class AerialFishingPlugin extends Plugin
 			{
 				dryStreak = fishCaught;
 				updateOverlay();
-				log.info("Saved dryestStreak to profile: " + totalPearls);
-				log.info("pearl rate" + fishCaughtPearlCaught);
+				log.debug("Saved dryestStreak to profile: " + totalPearls);
+				log.debug("pearl rate" + fishCaughtPearlCaught);
 
 				// Update dryStreak to config for persistence
 				configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak); // add the value to the config dryStreak
@@ -237,10 +237,10 @@ public class AerialFishingPlugin extends Plugin
 
 	public double pearlRateWikiCalc()
 	{
-		log.info("4");
+		//log.info("4");
 		if (client == null)
 		{
-			log.warn("Client not initialized.");
+			//log.warn("Client not initialized.");
 			return -1;
 		}
 
@@ -248,20 +248,25 @@ public class AerialFishingPlugin extends Plugin
 		//levelFishing = client.getRealSkillLevel(Skill.FISHING);
 		//levelHunter = client.getRealSkillLevel(Skill.HUNTER);
 
-		log.info ("Fishing Level: " + levelFishing);
-		log.info ("Hunter Level: " + levelHunter);
+		log.debug ("Fishing Level: " + levelFishing);
+		log.debug ("Hunter Level: " + levelHunter);
 
 		if (levelFishing == 0 || levelHunter == 0)
 		{
-			log.warn("Fishing or hunter is 0, which means something's fucked");
+			log.debug("Fishing or hunter is 0, which means something's fucked");
 			return -1;
 		}
 
 		// calculate the X value for the equation
-		double X = (levelFishing * 2 + levelHunter) / 3.0;
-		pearlWikiCalc = 1 / (100 - ((X-40) * 25 / 59));
+		double X = Math.floor((levelFishing * 2 + levelHunter) / 3.0);
+		double intermediateCalculation = (X - 40) * 25 / 59;
+		double denominator = 100 - intermediateCalculation;
+		pearlWikiCalc = 1 / denominator; // keep as a floating point value
 
-		log.info ("Rate=1/" + Math.round(1/ pearlWikiCalc));
+		log.debug("X: " + X);
+		log.debug("Intermediate Calculation: " + intermediateCalculation);
+		log.debug("Denominator: " + denominator);
+		log.debug("Pearl Wiki Calc: " + pearlWikiCalc);
 		return pearlWikiCalc;
 
     }
@@ -304,30 +309,28 @@ public class AerialFishingPlugin extends Plugin
 
 		if (savedTenchCount == null || savedTenchCount < 0) {
 			totalTenches = 0; // Default to 0 if not found
-			log.info("totalTench was null. Setting to 0.");
+			log.debug("totalTench was null. Setting to 0.");
 			configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches); // Save the initial value
 		} else {
 			totalTenches = savedTenchCount;
-			log.info("Loaded totalTench from profile: " + totalTenches);
+			log.debug("Loaded totalTench from profile: " + totalTenches);
 		}
 
 		totalPearls = savedPearlCount;
-		log.info("Loaded totalPearls from profile: " + totalPearls);
+		log.debug("Loaded totalPearls from profile: " + totalPearls);
 		bestStreak = savedBestStreak;
 	}
 
 	private boolean loadSkillData(){
 		levelFishing = client.getRealSkillLevel(Skill.FISHING);
 		levelHunter = client.getRealSkillLevel(Skill.HUNTER);
-		log.info(String.valueOf(levelFishing));
-		log.info(String.valueOf(levelHunter));
 
 		if (levelFishing == 0 || levelHunter == 0)
 		{
-			log.warn("Fishing or hunter level is 0,retrying next tick.");
+			log.debug("Fishing or hunter level is 0,retrying next tick.");
 			return false;
 		}
-		log.info("Loaded fishing and hunter levels");
+		log.debug("Loaded fishing and hunter levels");
 		return true;
 	}
 
@@ -359,10 +362,10 @@ public class AerialFishingPlugin extends Plugin
 		return fishCaught;
 	}
 
-	/*public double getPearlWikiCalc()
+	public double getPearlWikiCalc()
 	{
 		return pearlWikiCalc;
-	}*/
+	}
 
 	public int getTotalFishCaught()
 	{
