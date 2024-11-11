@@ -35,3 +35,7 @@ Favorite it for easy access!<br>
 
 Here is the Config menu in all it's new glory.<br>
 ![ConfigMenuPearlLuck](https://github.com/user-attachments/assets/81121f57-527d-4b5f-83a6-e7229debc8f9)
+
+Make sure to share your stats in the Show and Tell Issue Discussion ![Show and tell](https://github.com/H4waiianPunch/Pearl-Luck-Tracker/issues/10)<br>
+![ShowAndTellPearlLuck](https://github.com/user-attachments/assets/7d67b80f-aebe-45d4-af45-f5f718e20991)
+
