@@ -14,7 +14,6 @@ public class AerialFishingOverlay extends Overlay
 {
     private final AerialFishingPlugin plugin;
     private final PanelComponent panelComponent = new PanelComponent();
-    //private String tenchChanceText = "Tench Chance: 0.0%"; // Starts the Tench Chance at 0.0%
 
     @Inject
     public AerialFishingOverlay(AerialFishingPlugin plugin)
@@ -109,14 +108,6 @@ public class AerialFishingOverlay extends Overlay
                     .build());
         }
 
-        // % chance for tench in session
-        /*if (plugin.getConfig().showTenchChance()) {
-            panelComponent.getChildren().add(TitleComponent.builder()
-                    .text(tenchChanceText)
-                    .color(Color.PINK)
-                    .build());
-        }*/
-
         if (plugin.getConfig().showTenchChance()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Tench Chance: " + plugin.getGoldenTenchChance() + "%")
@@ -128,13 +119,6 @@ public class AerialFishingOverlay extends Overlay
 
         return panelComponent.render(graphics);
     }
-
-    // Add this method to set the Tench chance text
-   /* public void setTenchChanceText(String text)
-    {
-        this.tenchChanceText = text;
-    }*/
-
     public void updateOverlay()
     {
 
