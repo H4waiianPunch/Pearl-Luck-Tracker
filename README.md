@@ -2,6 +2,9 @@
 
 Are you a clogger that wishes Aerial Fishing had more stats to keep you entertained? Yeah, I got you.
 
+Here's what the overlay looks like in game! <br>
+![OverlayPearlLuck](https://github.com/user-attachments/assets/f816c84e-c0b6-447a-8e2c-9303f390e5b6)
+
 With this plugin, you will be able to see the following things:
 - Track the following stats persistently(unless you reset them)
 -- Total Fish Caught
@@ -32,9 +35,3 @@ Favorite it for easy access!<br>
 
 Here is the Config menu in all it's new glory.<br>
 ![ConfigMenuPearlLuck](https://github.com/user-attachments/assets/81121f57-527d-4b5f-83a6-e7229debc8f9)
-
-
-
-Here's what the overlay looks like in game! <br>
-![OverlayPearlLuck](https://github.com/user-attachments/assets/f816c84e-c0b6-447a-8e2c-9303f390e5b6)
-
