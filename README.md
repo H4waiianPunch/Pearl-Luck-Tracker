@@ -1,22 +1,40 @@
 # Aerial Fishing Pearl Luck Tracker
 
-Are you a clogger that hates yourself because Aerial Fishing exists? Well, it's time to hate yourself more!
+Are you a clogger that wishes Aerial Fishing had more stats to keep you entertained? Yeah, I got you.
 
 With this plugin, you will be able to see the following things:
-- A counter that tracks the number of fish it takes to get a Molch Pearl;
-- A counter that tracks how many fish you needed to catch for the last Molch Pearl;
-- A counter that tracks your worst dry streak in getting a Molch Pearl. My highscore in testing was 310 fish caught for 1 Molch Pearl (: and;
-- The percent chance that you should've caught a Golden Tench in your current session.
+- Track the following stats persistently(unless you reset them)
+-- Total Fish Caught
+-- Total Pearls Caught
+-- Longest Dry Streak
+-- Best Streak (Biggest Spoon)
+-- Total Golden Tench Caught (Total Tench)
 
-The dry streak will persist across your profile, whereas the other variables will reset with your session.
-The plugin will only be active when you have the Cormoront's glove equipped.
+And there's more stats coming at you, this stats will be tracked for your session of Aerial Fishing.
+Note: They will reset to 0 when the cormoront goes back to Alry, when you turn the plugin off and on, and when you log out.
+- Fish Caught (Since last Molch Pearl)
+- Session Fish (Fish caught this session)
+- Last Pearl (How many fish it took to get the last Molch Pearl)
+- Session Pearls (The number of Molch Pearls this session)
+- Actual Rate (This is your ACTUAL Molch Pearl rate. Number of fish caught this session / Molch Pearls gained)
+- Wiki Rate (This is the rate that can be found from the wiki. It uses your Fishing and Hunter level to determine the rate. 1/75 to 1/200)
+- Tench Chance (The chance that you would have got at least 1 tench in the number of fish caught this session)
+
+This version now also brings you the ability to reset the persistent stats below for a clean start:
+- Total Fish Caught
+- Total Pearls Caught
+- Longest Dry Streak
+- Best Streak
+- Total Golden Tench Caught
 
 Favorite it for easy access!<br>
 ![Scroll menu](https://github.com/user-attachments/assets/1f79eac0-fdc0-4fb8-92b3-5c00be80a225)
 
-In the configuration menu you're able to turn on or off the Golden Tench luck percentage.<br>
-![OpenConfigMenu](https://github.com/user-attachments/assets/f044c03e-9227-4305-9262-97763bf99a9d)
+Here is the Config menu in all it's new glory.<br>
+![ConfigMenuPearlLuck](https://github.com/user-attachments/assets/81121f57-527d-4b5f-83a6-e7229debc8f9)
+
 
 
 Here's what the overlay looks like in game! <br>
-![OverlayInGame](https://github.com/user-attachments/assets/b03f9bb4-ba37-44ea-9652-25ab1777f577)
+![OverlayPearlLuck](https://github.com/user-attachments/assets/f816c84e-c0b6-447a-8e2c-9303f390e5b6)
+
