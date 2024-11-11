@@ -301,10 +301,10 @@ public class AerialFishingPlugin extends Plugin
 
 		//Only call loadSkillData if the level is fishing or hunter
 		if (skill == Skill.FISHING || skill == Skill.HUNTER) {
-			boolean success = loadSkillData();
-			if (!success) {
+			doFetchSkillLevels = true;
+			/*if (!success) {
 				log.debug("Failed to load skill data, retrying next tick");
-			}
+			}*/
 		}
 	}
 
