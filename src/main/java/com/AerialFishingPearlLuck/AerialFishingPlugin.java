@@ -1,4 +1,6 @@
 package com.AerialFishingPearlLuck;
+// VERSION 1.2
+
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
@@ -10,9 +12,14 @@ import net.runelite.api.events.ItemContainerChanged;
 import net.runelite.client.callback.ClientThread;
 import net.runelite.client.config.ConfigManager;
 import net.runelite.client.eventbus.Subscribe;
+import net.runelite.client.events.ConfigChanged;
 import net.runelite.client.plugins.Plugin;
 import net.runelite.client.plugins.PluginDescriptor;
 import net.runelite.client.ui.overlay.OverlayManager;
+import net.runelite.api.Skill;
+import net.runelite.api.events.GameTick;
+import net.runelite.api.events.StatChanged;
+import java.text.DecimalFormat;
 
 @Slf4j
 @PluginDescriptor(
@@ -46,15 +53,28 @@ public class AerialFishingPlugin extends Plugin
 	private int dryStreak; // Will be loaded from config
 	private int lastStreak = 0;
 	private int tenchProgress = 0;
+	private int totalPearls;
+	private int sessionPearls;
+	private int totalTenches;
+	private int bestStreak;
+	private int fishCaughtPearlCaught = 0;
+	private int sessionFishCaught;
+	private double pearlWikiCalc;
+	private int levelFishing;
+	private int levelHunter;
+	private boolean doFetchSkillLevels = true;
+	private int totalFishCaught;
+	private double tenchChance;
 
 	private boolean overlayAdded = false;
 
 	@Override
 	protected void startUp() throws Exception
 	{
-		log.info("Aerial Fishing Tracker started!");
+		log.debug("Aerial Fishing Tracker started!");
 
-		// Run the code on the client thread to avoid concurrency issues
+
+		// Honestly don't know what this does
 		clientThread.invoke(() ->
 		{
 			// Access the equipment container
@@ -75,24 +95,74 @@ public class AerialFishingPlugin extends Plugin
 	}
 
 	@Override
-	protected void shutDown() throws Exception
+	protected void shutDown() throws Exception // Resets a bunch of stats on shutdown
 	{
-		log.info("Aerial Fishing Tracker stopped!");
+		log.debug("Aerial Fishing Tracker stopped!");
 		overlayManager.remove(overlay);
 		fishCaught = 0;
 		lastStreak = 0;
 		tenchProgress = 0;
-		overlay.setTenchChanceText("Tench Chance: 0.0%");
+		fishCaughtPearlCaught = 0;
+		sessionPearls = 0;
+		sessionFishCaught = 0;
+		tenchChance = 0;
 	}
 
-	public void updateOverlay()
+	@Subscribe
+	protected void onConfigChanged(ConfigChanged configChanged) // This is used to reset the persistent values.
+	{
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (config.resetBestStreak())
+			{
+				bestStreak = 0;
+				log.debug("Best Streak has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetBestStreak", false);
+				configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak);
+			}
+
+			if (config.resetDryStreak())
+			{
+				dryStreak = 0;
+				log.debug("Dry Streak has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetDryStreak", false);
+				configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak);
+			}
+
+			if (config.resetTotalFish())
+			{
+				totalFishCaught = 0;
+				log.debug("Total Fish has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetTotalFish", false);
+				configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
+			}
+
+			if (config.resetTotalPearls())
+			{
+				totalPearls = 0;
+				log.debug("Total Pearls has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetTotalPearls", false);
+				configManager.setRSProfileConfiguration("pearlluck", "totalPearls", totalPearls);
+			}
+
+			if (config.resetTotalTench())
+			{
+				totalTenches = 0;
+				log.debug("Total Tench has been reset to 0");
+				configManager.setConfiguration("pearlluck", "resetTotalTench", false);
+				configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);
+			}
+
+		}
+	}
+
+	/*public void updateOverlay() Pretty sure I can delete this.. but I'm afraid something will break
 	{
 		double tenchPercentage = (tenchProgress / 20) * 0.1;
 		String tenchPercentageFormatted = String.format("%.1f", tenchPercentage);
-		overlay.setTenchChanceText("Tench Chance: " + tenchPercentageFormatted + "%");
+		//overlay.setTenchChanceText("Tench Chance: " + tenchPercentageFormatted + "%");
 		log.debug("Current Golden Tench chance: " + tenchPercentageFormatted + "%");
-	}
-
+	}*/
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
@@ -104,11 +174,18 @@ public class AerialFishingPlugin extends Plugin
 		{
 			fishCaught++; // add +1 to the counter
 			tenchProgress++; // add +1 to the fish caught towards golden tench
-			updateOverlay();
-			log.debug("Overlay Updated");
+			sessionFishCaught++; //adds +1 to the session fish counter to track FishxPearl rate
+			totalFishCaught++; // Adds +1 to the total fish caught for people that like to see it
+			configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught); // Updates the totalFishCaught calc for persistence
+			tenchChance = Double.parseDouble(calculateGoldenTenchChance()); //Gets the tench chance from function below
+
+			// Used to spoof the golden tench variable for testing
+			/*totalTenches++;
+			configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);*/
+
+			//updateOverlay();
+			//log.debug("Overlay Updated");
 			log.debug("Fish caught: " + fishCaught + ", Golden Tench progress: " + tenchProgress);
-
-
 		}
 
 		// Molch Pearl collected
@@ -118,16 +195,46 @@ public class AerialFishingPlugin extends Plugin
 			if (fishCaught > dryStreak)
 			{
 				dryStreak = fishCaught;
+				//updateOverlay();
+				log.debug("Saved dryestStreak to profile: " + totalPearls);
+				log.debug("pearl rate" + fishCaughtPearlCaught);
 
 				// Update dryStreak to config for persistence
 				configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak); // add the value to the config dryStreak
 				log.debug("Saved dryestStreak to profile: " + dryStreak);
-			}
+				}
+
+			totalPearls++;
+			sessionPearls++;
+			configManager.setRSProfileConfiguration("pearlluck", "totalPearls", totalPearls);
 			lastStreak = fishCaught; // Sets the last streak value to the fish caught value
+
+			if (bestStreak == 0 || fishCaught < bestStreak)
+			{
+				bestStreak = fishCaught;
+				//updateOverlay();
+				configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak); // add the value to the config bestStreak
+			}
+
+			if (totalPearls > 0) {
+				fishCaughtPearlCaught = sessionFishCaught / sessionPearls;
+			} else {
+				fishCaughtPearlCaught = 0;
+			}
+
 			fishCaught = 0; // Reset the fish count after collecting a Molch Pearl
 			log.debug("Molch Pearl collected. Fish count reset.");
 		}
+
+		if (message.equals("<col=ef1020>The cormorant has brought you a very strange tench.</col>"))
+		{
+			totalTenches++;
+			configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);
+		}
+
+
 	}
+
 
 	@Subscribe
 	public void onItemContainerChanged(ItemContainerChanged event)
@@ -149,10 +256,13 @@ public class AerialFishingPlugin extends Plugin
 					overlayAdded = false;
 					log.debug("Bird not equipped. Overlay removed.");
 
-					// Reset stats when not using plugin - except dryStreak
+					// Reset stats
 					fishCaught = 0;
 					lastStreak = 0;
-					overlay.setTenchChanceText("Tench Chance: 0.0%");
+					sessionFishCaught = 0;
+					sessionPearls = 0;
+					tenchChance = 0;
+			//		overlay.setTenchChanceText("Tench Chance: 0.0%");
 					log.debug("Values Reset");
 				}
 				else if ((weaponId == ITEM_ID_1 || weaponId == ITEM_ID_2) && !overlayAdded)
@@ -160,7 +270,7 @@ public class AerialFishingPlugin extends Plugin
 					overlayManager.add(overlay);
 					overlayAdded = true;
 					log.debug("Bird equipped. Overlay added.");
-					Integer savedDryStreak = configManager.getRSProfileConfiguration("pearlluck", "dryStreak", Integer.class);
+					loadProfileData();
 				}
 			}
 			else if (overlayAdded)
@@ -170,18 +280,97 @@ public class AerialFishingPlugin extends Plugin
 				log.debug("Weapon slot is empty. Overlay removed.");
 				fishCaught = 0;
 				lastStreak = 0;
-				overlay.setTenchChanceText("Tench Chance: 0.0%");
+				sessionFishCaught = 0;
+				sessionPearls = 0;
+				tenchChance = 0;
 			}
 		}
 	}
 
 	@Subscribe
-	public void onGameStateChanged(GameStateChanged event)
-	{
-		if (event.getGameState() == GameState.LOGGED_IN)
-		{
+	public void onGameStateChanged(GameStateChanged event) throws InterruptedException {
+		if (event.getGameState() == GameState.LOGGED_IN) {
 			// User has logged in, now we load the profile
 			loadProfileData();
+		}
+	}
+
+	@Subscribe
+	public void onStatChanged(StatChanged event) { 
+		Skill skill = event.getSkill();
+
+		//Only call loadSkillData if the level is fishing or hunter
+		if (skill == Skill.FISHING || skill == Skill.HUNTER) {
+			doFetchSkillLevels = true;
+			/*if (!success) {
+				log.debug("Failed to load skill data, retrying next tick");
+			}*/
+		}
+	}
+
+	public double pearlRateWikiCalc()
+	{
+		//log.debug("4");
+		if (client == null)
+		{
+			//log.warn("Client not initialized.");
+			return -1;
+		}
+
+		log.debug ("Fishing Level: " + levelFishing);
+		log.debug ("Hunter Level: " + levelHunter);
+
+		if (levelFishing == 0 || levelHunter == 0)
+		{
+			log.debug("Fishing or hunter is 0, which means something's fucked");
+			return -1;
+		}
+
+		// calculate the X value for the equation
+		double X = Math.floor((levelFishing * 2 + levelHunter) / 3.0);
+		double intermediateCalculation = (X - 40) * 25 / 59;
+		double denominator = 100 - intermediateCalculation;
+		pearlWikiCalc = 1 / denominator; // keep as a floating point value
+
+		log.debug("X: " + X);
+		log.debug("Intermediate Calculation: " + intermediateCalculation);
+		log.debug("Denominator: " + denominator);
+		log.debug("Pearl Wiki Calc: " + pearlWikiCalc);
+		return pearlWikiCalc;
+
+    }
+
+	private String calculateGoldenTenchChance() {
+		if (sessionFishCaught <= 0) {
+			log.debug("Tench chance: 0.0 (no fish caught yet)");
+			return "0.0";}
+
+		double dropRate = 1.0 / 20000.0;
+		double noTenchProbability = 1 - dropRate;
+		double tenchChance = 1 - Math.pow(noTenchProbability, sessionFishCaught);
+
+		DecimalFormat df = new DecimalFormat("##.###");
+		String formattedTenchChance = df.format(tenchChance*100);
+
+		log.debug("Calculated Tench chance with " + sessionFishCaught + " fish caught: " + (tenchChance * 100));
+
+		return formattedTenchChance;
+	}
+
+	@Subscribe
+	public void onGameTick(GameTick event)
+	{
+		//log.debug("1");
+		if (doFetchSkillLevels)
+		{
+			//log.debug("2");
+			if (loadSkillData())
+			{
+				//log.debug("3");
+				doFetchSkillLevels = false;
+				pearlRateWikiCalc();
+
+			}
 		}
 	}
 
@@ -189,6 +378,10 @@ public class AerialFishingPlugin extends Plugin
 	{
 		// Load dry streak from the config
 		Integer savedDryStreak = configManager.getRSProfileConfiguration("pearlluck", "dryStreak", Integer.class);
+		Integer savedPearlCount = configManager.getRSProfileConfiguration("pearlluck", "totalPearls", Integer.class);
+		Integer savedTenchCount = configManager.getRSProfileConfiguration("pearlluck", "totalTench", Integer.class);
+		Integer savedBestStreak = configManager.getRSProfileConfiguration("pearlluck","bestStreak", Integer.class);
+		Integer savedTotalFish = configManager.getRSProfileConfiguration("pearlluck", "totalFishCaught", Integer.class);
 
 		// Check if savedDryStreak is null
 		if (savedDryStreak == null) {
@@ -198,18 +391,35 @@ public class AerialFishingPlugin extends Plugin
 		} else {
 			dryStreak = savedDryStreak; // Load existing value
 			log.debug("Loaded dryStreak from profile: " + dryStreak);
+
 		}
+
+		if (savedTenchCount == null || savedTenchCount < 0) {
+			totalTenches = 0; // Default to 0 if not found
+			log.debug("totalTench was null. Setting to 0.");
+			configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches); // Save the initial value
+		} else {
+			totalTenches = savedTenchCount;
+			log.debug("Loaded totalTench from profile: " + totalTenches);
+		}
+
+		totalPearls = savedPearlCount;
+		log.debug("Loaded totalPearls from profile: " + totalPearls);
+		bestStreak = savedBestStreak;
+		totalFishCaught = savedTotalFish;
 	}
 
-	public String getTenchChanceText()
-	{
-		final int tenchChance = 40000; // The chance of getting a Golden Tench (1/20000)
+	private boolean loadSkillData(){
+		levelFishing = client.getRealSkillLevel(Skill.FISHING);
+		levelHunter = client.getRealSkillLevel(Skill.HUNTER);
 
-		// Calculate the percentage progress towards the next Golden Tench
-		double tenchPercentage = (double) tenchProgress / tenchChance * 100;
-
-		// Format the percentage to 1 decimal place
-		return String.format("%.1f", tenchPercentage) + "%";
+		if (levelFishing == 0 || levelHunter == 0)
+		{
+			log.debug("Fishing or hunter level is 0,retrying next tick.");
+			return false;
+		}
+		log.debug("Loaded fishing and hunter levels");
+		return true;
 	}
 
 	public AerialFishingConfig getConfig()
@@ -229,9 +439,39 @@ public class AerialFishingPlugin extends Plugin
 		return fishCaught;
 	}
 
+	public double getPearlWikiCalc()
+	{
+		return pearlWikiCalc;
+	}
+
+	public double getGoldenTenchChance()
+	{
+		return tenchChance;
+	}
+
+	public int getSessionFishCaught()
+	{
+		return sessionFishCaught;
+	}
+
+	public int getTotalFishCaught()
+	{
+		return totalFishCaught;
+	}
+
 	public int getDryStreak()
 	{
 		return dryStreak;
+	}
+
+	public int getTotalPearls()
+	{
+		return totalPearls;
+	}
+
+	public int getTotalTenchs()
+	{
+		return totalTenches;
 	}
 
 	public int getLastStreak()
@@ -239,8 +479,18 @@ public class AerialFishingPlugin extends Plugin
 		return lastStreak;
 	}
 
-	public int getTenchChance()
+	public int getFishCaughtPearlCaught()
 	{
-		return tenchProgress;
+		return fishCaughtPearlCaught;
+	}
+
+	public int getBestStreak()
+	{
+		return bestStreak;
+	}
+
+	public int getSessionPearls()
+	{
+		return sessionPearls;
 	}
 }
