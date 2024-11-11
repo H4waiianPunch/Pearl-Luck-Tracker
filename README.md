@@ -6,12 +6,12 @@ Here's what the overlay looks like in game! <br>
 ![OverlayPearlLuck](https://github.com/user-attachments/assets/f816c84e-c0b6-447a-8e2c-9303f390e5b6)
 
 With this plugin, you will be able to see the following things:
-- Track the following stats persistently(unless you reset them)
--- Total Fish Caught
--- Total Pearls Caught
--- Longest Dry Streak
--- Best Streak (Biggest Spoon)
--- Total Golden Tench Caught (Total Tench)
+- Track the following stats persistently(unless you reset them):
+-   Total Fish Caught
+-   Total Pearls Caught
+-   Longest Dry Streak
+-   Best Streak (Biggest Spoon)
+-   Total Golden Tench Caught (Total Tench)
 
 And there's more stats coming at you, this stats will be tracked for your session of Aerial Fishing.
 Note: They will reset to 0 when the cormoront goes back to Alry, when you turn the plugin off and on, and when you log out.
