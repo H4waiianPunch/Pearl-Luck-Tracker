@@ -6,6 +6,9 @@ import net.runelite.client.ui.overlay.OverlayPosition;
 import net.runelite.client.ui.overlay.OverlayPriority;
 import net.runelite.client.ui.overlay.components.PanelComponent;
 import net.runelite.client.ui.overlay.components.TitleComponent;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY;
+import static net.runelite.api.MenuAction.RUNELITE_OVERLAY_CONFIG;
+import static net.runelite.client.ui.overlay.OverlayManager.OPTION_CONFIGURE;
 
 import javax.inject.Inject;
 import java.awt.*;
@@ -22,6 +25,15 @@ public class AerialFishingOverlay extends Overlay
         setPosition(OverlayPosition.TOP_LEFT); // Position the overlay at the top left
         setLayer(OverlayLayer.ABOVE_WIDGETS); // The overlay will be drawn above the game widgets
         setPriority(OverlayPriority.HIGH); // High priority ensures it remains visible
+
+        // The following addMenuEntries will allow the persistent stats to be reset via a shift+click menu on the overlay.
+        // They don't seem to need a "target" but the field needs to be there otherwise it breaks.
+
+        addMenuEntry(RUNELITE_OVERLAY, "Reset Total Pearls", "", e -> plugin.resetTotalPearls());
+        addMenuEntry(RUNELITE_OVERLAY, "Reset Total Fish Caught", "", e -> plugin.resetTotalFishCaught());
+        addMenuEntry(RUNELITE_OVERLAY, "Reset Total Tenches Caught", "", e -> plugin.resetTotalTench());
+        addMenuEntry(RUNELITE_OVERLAY, "Reset Dry Streak", "", e -> plugin.resetDryStreak());
+        addMenuEntry(RUNELITE_OVERLAY, "Reset Best Streak", "", e -> plugin.resetBestStreak());
     }
 
     @Override
@@ -55,35 +67,35 @@ public class AerialFishingOverlay extends Overlay
         if (plugin.getConfig().lastPearl()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Last Pearl: " + plugin.getLastStreak())
-                    .color(Color.LIGHT_GRAY) // Color can be adjusted
+                    .color(Color.CYAN) // Color can be adjusted
                     .build());
         }
 
         if (plugin.getConfig().sessionPearls()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Session Pearls: " + plugin.getSessionPearls())
-                    .color(Color.LIGHT_GRAY)
+                    .color(Color.CYAN)
                     .build());
         }
 
         if (plugin.getConfig().totalPearls()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Total Pearls: " + plugin.getTotalPearls())
-                    .color(Color.LIGHT_GRAY)
+                    .color(Color.CYAN)
                     .build());
         }
 
         if (plugin.getConfig().actualPearlRate()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Actual Rate: 1/" + plugin.getFishCaughtPearlCaught())
-                    .color(Color.LIGHT_GRAY)
+                    .color(Color.CYAN)
                     .build());
         }
 
         if (plugin.getConfig().wikiPearlRate()) {
             panelComponent.getChildren().add(TitleComponent.builder()
                     .text("Wiki Rate: 1/" + (int) Math.floor(1 / plugin.getPearlWikiCalc()))
-                    .color(Color.LIGHT_GRAY)
+                    .color(Color.CYAN)
                     .build());
         }
 

@@ -106,85 +106,29 @@ public class AerialFishingPlugin extends Plugin
 		sessionPearls = 0;
 		sessionFishCaught = 0;
 		tenchChance = 0;
+		configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught); // Updates the totalFishCaught calc for persistence. It was decided that updating per fish caught was too much.
 	}
 
-	@Subscribe
-	protected void onConfigChanged(ConfigChanged configChanged) // This is used to reset the persistent values.
-	{
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (config.resetBestStreak())
-			{
-				bestStreak = 0;
-				log.debug("Best Streak has been reset to 0");
-				configManager.setConfiguration("pearlluck", "resetBestStreak", false);
-				configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak);
-			}
 
-			if (config.resetDryStreak())
-			{
-				dryStreak = 0;
-				log.debug("Dry Streak has been reset to 0");
-				configManager.setConfiguration("pearlluck", "resetDryStreak", false);
-				configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak);
-			}
-
-			if (config.resetTotalFish())
-			{
-				totalFishCaught = 0;
-				log.debug("Total Fish has been reset to 0");
-				configManager.setConfiguration("pearlluck", "resetTotalFish", false);
-				configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
-			}
-
-			if (config.resetTotalPearls())
-			{
-				totalPearls = 0;
-				log.debug("Total Pearls has been reset to 0");
-				configManager.setConfiguration("pearlluck", "resetTotalPearls", false);
-				configManager.setRSProfileConfiguration("pearlluck", "totalPearls", totalPearls);
-			}
-
-			if (config.resetTotalTench())
-			{
-				totalTenches = 0;
-				log.debug("Total Tench has been reset to 0");
-				configManager.setConfiguration("pearlluck", "resetTotalTench", false);
-				configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);
-			}
-
-		}
-	}
-
-	/*public void updateOverlay() Pretty sure I can delete this.. but I'm afraid something will break
-	{
-		double tenchPercentage = (tenchProgress / 20) * 0.1;
-		String tenchPercentageFormatted = String.format("%.1f", tenchPercentage);
-		//overlay.setTenchChanceText("Tench Chance: " + tenchPercentageFormatted + "%");
-		log.debug("Current Golden Tench chance: " + tenchPercentageFormatted + "%");
-	}*/
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
 	{
 		String message = event.getMessage();
 
-		// Comoront catches a fish chat message
+		// Cormorant catches a fish chat message
 		if (message.equals("You send your cormorant to try to catch a fish from out at sea."))
 		{
 			fishCaught++; // add +1 to the counter
 			tenchProgress++; // add +1 to the fish caught towards golden tench
 			sessionFishCaught++; //adds +1 to the session fish counter to track FishxPearl rate
 			totalFishCaught++; // Adds +1 to the total fish caught for people that like to see it
-			configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught); // Updates the totalFishCaught calc for persistence
 			tenchChance = Double.parseDouble(calculateGoldenTenchChance()); //Gets the tench chance from function below
 
 			// Used to spoof the golden tench variable for testing
 			/*totalTenches++;
 			configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);*/
 
-			//updateOverlay();
-			//log.debug("Overlay Updated");
 			log.debug("Fish caught: " + fishCaught + ", Golden Tench progress: " + tenchProgress);
 		}
 
@@ -262,7 +206,7 @@ public class AerialFishingPlugin extends Plugin
 					sessionFishCaught = 0;
 					sessionPearls = 0;
 					tenchChance = 0;
-			//		overlay.setTenchChanceText("Tench Chance: 0.0%");
+					configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught); // Updates the totalFishCaught calc for persistence
 					log.debug("Values Reset");
 				}
 				else if ((weaponId == ITEM_ID_1 || weaponId == ITEM_ID_2) && !overlayAdded)
@@ -283,6 +227,7 @@ public class AerialFishingPlugin extends Plugin
 				sessionFishCaught = 0;
 				sessionPearls = 0;
 				tenchChance = 0;
+				configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
 			}
 		}
 	}
@@ -300,20 +245,15 @@ public class AerialFishingPlugin extends Plugin
 		Skill skill = event.getSkill();
 
 		//Only call loadSkillData if the level is fishing or hunter
-		if (skill == Skill.FISHING || skill == Skill.HUNTER) {
+		if (overlayAdded && skill == Skill.FISHING || skill == Skill.HUNTER) {
 			doFetchSkillLevels = true;
-			/*if (!success) {
-				log.debug("Failed to load skill data, retrying next tick");
-			}*/
 		}
 	}
 
 	public double pearlRateWikiCalc()
 	{
-		//log.debug("4");
 		if (client == null)
 		{
-			//log.warn("Client not initialized.");
 			return -1;
 		}
 
@@ -360,13 +300,10 @@ public class AerialFishingPlugin extends Plugin
 	@Subscribe
 	public void onGameTick(GameTick event)
 	{
-		//log.debug("1");
 		if (doFetchSkillLevels)
 		{
-			//log.debug("2");
 			if (loadSkillData())
 			{
-				//log.debug("3");
 				doFetchSkillLevels = false;
 				pearlRateWikiCalc();
 
@@ -420,6 +357,31 @@ public class AerialFishingPlugin extends Plugin
 		}
 		log.debug("Loaded fishing and hunter levels");
 		return true;
+	}
+
+	public void resetTotalPearls() { // Resets this stat from the shift + click dropdown from overlay class
+		totalPearls = 0;
+		configManager.setRSProfileConfiguration("pearlluck", "totalPearls", totalPearls);
+	}
+
+	public void resetTotalFishCaught() { // Resets this stat from the shift + click dropdown from overlay class
+		totalFishCaught = 0;
+		configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
+	}
+
+	public void resetTotalTench() { // Resets this stat from the shift + click dropdown from overlay class
+		totalTenches = 0;
+		configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);
+	}
+
+	public void resetDryStreak() { // Resets this stat from the shift + click dropdown from overlay class
+		dryStreak = 0;
+		configManager.setRSProfileConfiguration("pearlluck", "dryStreak", dryStreak);
+	}
+
+	public void resetBestStreak() { // Resets this stat from the shift + click dropdown from overlay class
+		bestStreak = 0;
+		configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak);
 	}
 
 	public AerialFishingConfig getConfig()

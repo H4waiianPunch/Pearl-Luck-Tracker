@@ -8,17 +8,6 @@ import net.runelite.client.config.ConfigSection;
 @ConfigGroup("pearlluck")
 public interface AerialFishingConfig extends Config
 {
-	/*@ConfigItem(
-			keyName = "pearlRate",
-			name = "Pearl Rate",
-			description = "This is the calculated pearl rate that you have. 1/75 to 1/200",
-			hidden = false
-	)
-
-	//default boolean pearlRate(){return true;}
-    default PearlCalcType pearlRate(){
-		return PearlCalcType.WikiCalc;
-	}*/
 
 	@ConfigSection(
 			name = "Fish Settings",
@@ -48,13 +37,6 @@ public interface AerialFishingConfig extends Config
 	)
 	String streakSection = "streakSection";
 
-	@ConfigSection(
-			name = "Reset Settings",
-			description = "Reset your persistent stats here.",
-			position = 4
-	)
-	String resetSection = "resetSection";
-
 	@ConfigItem(
 			keyName = "bestStreak",
 			name = "Best Streak",
@@ -62,46 +44,6 @@ public interface AerialFishingConfig extends Config
 			section = streakSection
 	)
 	default boolean bestStreak() {return true;}
-
-	@ConfigItem(
-			keyName = "resetBestStreak",
-			name = "Reset Best Streak",
-			description = "Resets your Best Streak value",
-			section = resetSection
-	)
-	default boolean resetBestStreak() { return false; }
-
-	@ConfigItem(
-			keyName = "resetDryStreak",
-			name = "Reset Dry Streak",
-			description = "Resets your Dry Streak value",
-			section = resetSection
-	)
-	default boolean resetDryStreak() { return false; }
-
-	@ConfigItem(
-			keyName = "resetTotalFish",
-			name = "Reset Total Fish",
-			description = "Resets your Total Fish Caught value",
-			section = resetSection
-	)
-	default boolean resetTotalFish() { return false; }
-
-	@ConfigItem(
-			keyName = "resetTotalPearls",
-			name = "Reset Total Pearls",
-			description = "Resets your Total Molch Pearls value",
-			section = resetSection
-	)
-	default boolean resetTotalPearls() { return false; }
-
-	@ConfigItem(
-			keyName = "resetTotalTench",
-			name = "Reset Total Tench",
-			description = "Resets your Total Golden Tench value",
-			section = resetSection
-	)
-	default boolean resetTotalTench() { return false; }
 
 	@ConfigItem(
 			keyName = "fishCaught",
@@ -142,9 +84,7 @@ public interface AerialFishingConfig extends Config
 			description = "Every 20 fish caught = .1% (1/20k)",
 			section = tenchSection
 	)
-	default boolean showTenchChance() {
-		return true; // Adjust default value as needed
-	}
+	default boolean showTenchChance(){return true;}
 
 	@ConfigItem(
 			keyName = "totalTench",
