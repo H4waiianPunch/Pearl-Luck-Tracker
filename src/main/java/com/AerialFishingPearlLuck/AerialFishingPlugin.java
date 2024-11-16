@@ -67,6 +67,18 @@ public class AerialFishingPlugin extends Plugin
 	private double tenchChance;
 
 	private boolean overlayAdded = false;
+	private boolean totalFishCaughtEnabled;
+	private boolean sessionFishCaughtEnabled;
+	private boolean fishCaughtEnabled;
+	private boolean lastPearlEnabled;
+	private boolean sessionPearlsEnabled;
+	private boolean totalPearlsEnabled;
+	private boolean actualPearlRateEnabled;
+	private boolean wikiPearlRateEnabled;
+	private boolean dryStreakEnabled;
+	private boolean bestStreakEnabled;
+	private boolean totalTenchEnabled;
+	private boolean showTenchChanceEnabled;
 
 	@Override
 	protected void startUp() throws Exception
@@ -92,6 +104,57 @@ public class AerialFishingPlugin extends Plugin
 				}
 			}
 		});
+
+		// Loading the configs to see if they're enabled or not
+
+		if (plugin.getConfig().totalFishCaught()){
+			totalFishCaughtEnabled = true;
+		}
+
+		if (plugin.getConfig().sessionFishCaught()){
+			sessionFishCaughtEnabled = true;
+		}
+
+		if (plugin.getConfig().fishCaught()) {
+			fishCaughtEnabled = true;
+		}
+
+		if (plugin.getConfig().lastPearl()) {
+			lastPearlEnabled = true;
+		}
+
+		if (plugin.getConfig().sessionPearls()) {
+			sessionPearlsEnabled = true;
+		}
+
+		if (plugin.getConfig().totalPearls()) {
+			totalPearlsEnabled = true;
+		}
+
+		if (plugin.getConfig().actualPearlRate()) {
+			actualPearlRateEnabled = true;
+		}
+
+		if (plugin.getConfig().wikiPearlRate()) {
+			wikiPearlRateEnabled = true;
+		}
+
+		if (plugin.getConfig().dryStreak()) {
+			dryStreakEnabled = true;
+		}
+
+		if (plugin.getConfig().bestStreak()) {
+			bestStreakEnabled = true;
+		}
+
+		if (plugin.getConfig().totalTench()) {
+			totalTenchEnabled = true;
+		}
+
+		if (plugin.getConfig().showTenchChance()) {
+			showTenchChanceEnabled = true;
+		}
+
 	}
 
 	@Override
@@ -394,6 +457,57 @@ public class AerialFishingPlugin extends Plugin
 	AerialFishingConfig provideConfig()
 	{
 		return configManager.getConfig(AerialFishingConfig.class);
+	}
+
+	public boolean isTotalFishCaughtEnabled()
+	{
+		return totalFishCaughtEnabled;
+	}
+
+	public boolean isSessionFishCaughtEnabled()
+	{
+		return sessionFishCaughtEnabled;
+	}
+
+	public boolean isFishCaughtEnabled()
+	{
+		return fishCaughtEnabled;
+	}
+
+	public boolean isLastPearlEnabled() {
+		return lastPearlEnabled;
+	}
+
+	public boolean isSessionPearlsEnabled() {
+		return sessionPearlsEnabled;
+	}
+
+	public boolean isTotalPearlsEnabled() {
+		return totalPearlsEnabled;
+	}
+
+	public boolean isActualPearlRateEnabled() {
+		return actualPearlRateEnabled;
+	}
+
+	public boolean isWikiPearlRateEnabled() {
+		return wikiPearlRateEnabled;
+	}
+
+	public boolean isDryStreakEnabled() {
+		return dryStreakEnabled;
+	}
+
+	public boolean isBestStreakEnabled() {
+		return bestStreakEnabled;
+	}
+
+	public boolean isTotalTenchEnabled() {
+		return totalTenchEnabled;
+	}
+
+	public boolean isShowTenchChanceEnabled() {
+		return showTenchChanceEnabled;
 	}
 
 	public int getFishCaught()
