@@ -107,51 +107,51 @@ public class AerialFishingPlugin extends Plugin
 
 		// Loading the configs to see if they're enabled or not
 
-		if (plugin.getConfig().totalFishCaught()){
+		if (getConfig().totalFishCaught()){
 			totalFishCaughtEnabled = true;
 		}
 
-		if (plugin.getConfig().sessionFishCaught()){
+		if (getConfig().sessionFishCaught()){
 			sessionFishCaughtEnabled = true;
 		}
 
-		if (plugin.getConfig().fishCaught()) {
+		if (getConfig().fishCaught()) {
 			fishCaughtEnabled = true;
 		}
 
-		if (plugin.getConfig().lastPearl()) {
+		if (getConfig().lastPearl()) {
 			lastPearlEnabled = true;
 		}
 
-		if (plugin.getConfig().sessionPearls()) {
+		if (getConfig().sessionPearls()) {
 			sessionPearlsEnabled = true;
 		}
 
-		if (plugin.getConfig().totalPearls()) {
+		if (getConfig().totalPearls()) {
 			totalPearlsEnabled = true;
 		}
 
-		if (plugin.getConfig().actualPearlRate()) {
+		if (getConfig().actualPearlRate()) {
 			actualPearlRateEnabled = true;
 		}
 
-		if (plugin.getConfig().wikiPearlRate()) {
+		if (getConfig().wikiPearlRate()) {
 			wikiPearlRateEnabled = true;
 		}
 
-		if (plugin.getConfig().dryStreak()) {
+		if (getConfig().dryStreak()) {
 			dryStreakEnabled = true;
 		}
 
-		if (plugin.getConfig().bestStreak()) {
+		if (getConfig().bestStreak()) {
 			bestStreakEnabled = true;
 		}
 
-		if (plugin.getConfig().totalTench()) {
+		if (getConfig().totalTench()) {
 			totalTenchEnabled = true;
 		}
 
-		if (plugin.getConfig().showTenchChance()) {
+		if (getConfig().showTenchChance()) {
 			showTenchChanceEnabled = true;
 		}
 
