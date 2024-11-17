@@ -67,18 +67,18 @@ public class AerialFishingPlugin extends Plugin
 	private double tenchChance;
 
 	private boolean overlayAdded = false;
-	private boolean totalFishCaughtEnabled;
-	private boolean sessionFishCaughtEnabled;
-	private boolean fishCaughtEnabled;
-	private boolean lastPearlEnabled;
-	private boolean sessionPearlsEnabled;
-	private boolean totalPearlsEnabled;
-	private boolean actualPearlRateEnabled;
-	private boolean wikiPearlRateEnabled;
-	private boolean dryStreakEnabled;
-	private boolean bestStreakEnabled;
-	private boolean totalTenchEnabled;
-	private boolean showTenchChanceEnabled;
+	private boolean totalFishCaughtEnabled = false;
+	private boolean sessionFishCaughtEnabled = false;
+	private boolean fishCaughtEnabled = false;
+	private boolean lastPearlEnabled = false;
+	private boolean sessionPearlsEnabled = false;
+	private boolean totalPearlsEnabled = false;
+	private boolean actualPearlRateEnabled = false;
+	private boolean wikiPearlRateEnabled = false;
+	private boolean dryStreakEnabled = false;
+	private boolean bestStreakEnabled = false;
+	private boolean totalTenchEnabled = false;
+	private boolean showTenchChanceEnabled = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -172,7 +172,189 @@ public class AerialFishingPlugin extends Plugin
 		configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught); // Updates the totalFishCaught calc for persistence. It was decided that updating per fish caught was too much.
 	}
 
+	@Subscribe
+	protected void onConfigChanged(ConfigChanged configChanged) // This will allow the overlay values to change with the new way of tracking what's active.
+	{
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("totalFishCaught"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					totalFishCaughtEnabled = true;
+				}
+				else
+				{
+					totalFishCaughtEnabled = false;
+				}
+			}
+		}
 
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("sessionFishCaught"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					sessionFishCaughtEnabled = true;
+				}
+				else
+				{
+					sessionFishCaughtEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("fishCaught"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					fishCaughtEnabled = true;
+				}
+				else
+				{
+					fishCaughtEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("lastPearl"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					lastPearlEnabled = true;
+				}
+				else
+				{
+					lastPearlEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("sessionPearls"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					sessionPearlsEnabled = true;
+				}
+				else
+				{
+					sessionPearlsEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("totalPearls"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					totalPearlsEnabled = true;
+				}
+				else
+				{
+					totalPearlsEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("actualPearlRate"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					actualPearlRateEnabled = true;
+				}
+				else
+				{
+					actualPearlRateEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("wikiPearlRate"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					wikiPearlRateEnabled = true;
+				}
+				else
+				{
+					wikiPearlRateEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("dryStreak"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					dryStreakEnabled = true;
+				}
+				else
+				{
+					dryStreakEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("bestStreak"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					bestStreakEnabled = true;
+				}
+				else
+				{
+					bestStreakEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("totalTench"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					totalTenchEnabled = true;
+				}
+				else
+				{
+					totalTenchEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("showTenchChance"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					showTenchChanceEnabled = true;
+				}
+				else
+				{
+					showTenchChanceEnabled = false;
+				}
+			}
+		}
+	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
