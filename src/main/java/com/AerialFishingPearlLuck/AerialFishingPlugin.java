@@ -401,7 +401,6 @@ public class AerialFishingPlugin extends Plugin
 			if (bestStreak == 0 || fishCaught < bestStreak)
 			{
 				bestStreak = fishCaught;
-				//updateOverlay();
 				configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak); // add the value to the config bestStreak
 			}
 
