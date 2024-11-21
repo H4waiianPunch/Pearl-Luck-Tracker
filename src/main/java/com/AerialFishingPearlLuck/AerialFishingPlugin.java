@@ -106,55 +106,18 @@ public class AerialFishingPlugin extends Plugin
 		});
 
 		// Loading the configs to see if they're enabled or not
-
-		if (getConfig().totalFishCaught()){
-			totalFishCaughtEnabled = true;
-		}
-
-		if (getConfig().sessionFishCaught()){
-			sessionFishCaughtEnabled = true;
-		}
-
-		if (getConfig().fishCaught()) {
-			fishCaughtEnabled = true;
-		}
-
-		if (getConfig().lastPearl()) {
-			lastPearlEnabled = true;
-		}
-
-		if (getConfig().sessionPearls()) {
-			sessionPearlsEnabled = true;
-		}
-
-		if (getConfig().totalPearls()) {
-			totalPearlsEnabled = true;
-		}
-
-		if (getConfig().actualPearlRate()) {
-			actualPearlRateEnabled = true;
-		}
-
-		if (getConfig().wikiPearlRate()) {
-			wikiPearlRateEnabled = true;
-		}
-
-		if (getConfig().dryStreak()) {
-			dryStreakEnabled = true;
-		}
-
-		if (getConfig().bestStreak()) {
-			bestStreakEnabled = true;
-		}
-
-		if (getConfig().totalTench()) {
-			totalTenchEnabled = true;
-		}
-
-		if (getConfig().showTenchChance()) {
-			showTenchChanceEnabled = true;
-		}
-
+			totalFishCaughtEnabled = getConfig().totalFishCaught();
+			sessionFishCaughtEnabled = getConfig().sessionFishCaught();
+			fishCaughtEnabled = getConfig().fishCaught();
+			lastPearlEnabled = getConfig().lastPearl();
+			sessionPearlsEnabled = getConfig().sessionPearls();
+			totalPearlsEnabled = getConfig().totalPearls();
+			actualPearlRateEnabled = getConfig().actualPearlRate();
+			wikiPearlRateEnabled = getConfig().wikiPearlRate();
+			dryStreakEnabled = getConfig().dryStreak();
+			bestStreakEnabled = getConfig().bestStreak();
+			totalTenchEnabled = getConfig().totalTench();
+			showTenchChanceEnabled = getConfig().showTenchChance();
 	}
 
 	@Override
@@ -183,7 +146,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					totalFishCaughtEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					totalFishCaughtEnabled = false;
 				}
@@ -198,7 +161,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					sessionFishCaughtEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					sessionFishCaughtEnabled = false;
 				}
@@ -213,7 +176,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					fishCaughtEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					fishCaughtEnabled = false;
 				}
@@ -228,7 +191,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					lastPearlEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					lastPearlEnabled = false;
 				}
@@ -243,7 +206,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					sessionPearlsEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					sessionPearlsEnabled = false;
 				}
@@ -258,7 +221,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					totalPearlsEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					totalPearlsEnabled = false;
 				}
@@ -273,7 +236,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					actualPearlRateEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					actualPearlRateEnabled = false;
 				}
@@ -288,7 +251,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					wikiPearlRateEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					wikiPearlRateEnabled = false;
 				}
@@ -303,7 +266,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					dryStreakEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					dryStreakEnabled = false;
 				}
@@ -318,7 +281,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					bestStreakEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					bestStreakEnabled = false;
 				}
@@ -333,7 +296,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					totalTenchEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					totalTenchEnabled = false;
 				}
@@ -348,7 +311,7 @@ public class AerialFishingPlugin extends Plugin
 				{
 					showTenchChanceEnabled = true;
 				}
-				else
+				else if (configChanged.getNewValue().equals("false"))
 				{
 					showTenchChanceEnabled = false;
 				}
