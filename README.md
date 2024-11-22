@@ -22,7 +22,7 @@ Note: They will reset to 0 when the cormoront goes back to Alry, when you turn t
 - Session Pearls (The number of Molch Pearls this session)
 - Actual Rate (This is your ACTUAL Molch Pearl rate. Number of fish caught this session / Molch Pearls gained)
 - Wiki Rate (This is the rate that can be found from the wiki. It uses your Fishing and Hunter level to determine the rate. 1/75 to 1/200)
-- Tench Chance (The chance that you would have got at least 1 tench in the number of fish caught this session)
+- Tench Chance (Based on the dry rate calculator on the Wiki. Shows the % chance of catching 1 Golden Tench based on the number of fish caught this session)
 
 This version now also brings you the ability to reset the persistent stats below for a clean start:
 - Total Fish Caught
@@ -42,6 +42,8 @@ Here is the Config menu in all it's new glory.<br>
 ![ConfigMenuPearlLuckv2](https://github.com/user-attachments/assets/59bed7e4-607a-4f64-bab7-70c578c58597)
 
 
-Make sure to share your stats in the Show and Tell Issue Discussion ![Show and tell](https://github.com/H4waiianPunch/Pearl-Luck-Tracker/issues/10)<br>
-![ShowAndTellPearlLuck](https://github.com/user-attachments/assets/7d67b80f-aebe-45d4-af45-f5f718e20991)
+
+
+Make sure to share your stats in the Show and Tell Issue Discussion ![Show and tell](https://github.com/H4waiianPunch/Pearl-Luck-Tracker/discussions/16)<br>
+![ShowAndTellPearlLuckv2](https://github.com/user-attachments/assets/55168436-9a7c-4bc2-9b9e-17d559b82e50)
 
