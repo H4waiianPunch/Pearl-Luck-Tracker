@@ -67,6 +67,18 @@ public class AerialFishingPlugin extends Plugin
 	private double tenchChance;
 
 	private boolean overlayAdded = false;
+	private boolean totalFishCaughtEnabled = false;
+	private boolean sessionFishCaughtEnabled = false;
+	private boolean fishCaughtEnabled = false;
+	private boolean lastPearlEnabled = false;
+	private boolean sessionPearlsEnabled = false;
+	private boolean totalPearlsEnabled = false;
+	private boolean actualPearlRateEnabled = false;
+	private boolean wikiPearlRateEnabled = false;
+	private boolean dryStreakEnabled = false;
+	private boolean bestStreakEnabled = false;
+	private boolean totalTenchEnabled = false;
+	private boolean showTenchChanceEnabled = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -92,6 +104,20 @@ public class AerialFishingPlugin extends Plugin
 				}
 			}
 		});
+
+		// Loading the configs to see if they're enabled or not
+			totalFishCaughtEnabled = getConfig().totalFishCaught();
+			sessionFishCaughtEnabled = getConfig().sessionFishCaught();
+			fishCaughtEnabled = getConfig().fishCaught();
+			lastPearlEnabled = getConfig().lastPearl();
+			sessionPearlsEnabled = getConfig().sessionPearls();
+			totalPearlsEnabled = getConfig().totalPearls();
+			actualPearlRateEnabled = getConfig().actualPearlRate();
+			wikiPearlRateEnabled = getConfig().wikiPearlRate();
+			dryStreakEnabled = getConfig().dryStreak();
+			bestStreakEnabled = getConfig().bestStreak();
+			totalTenchEnabled = getConfig().totalTench();
+			showTenchChanceEnabled = getConfig().showTenchChance();
 	}
 
 	@Override
@@ -109,7 +135,189 @@ public class AerialFishingPlugin extends Plugin
 		configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught); // Updates the totalFishCaught calc for persistence. It was decided that updating per fish caught was too much.
 	}
 
+	@Subscribe
+	protected void onConfigChanged(ConfigChanged configChanged) // This will allow the overlay values to change with the new way of tracking what's active.
+	{
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("totalFishCaught"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					totalFishCaughtEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					totalFishCaughtEnabled = false;
+				}
+			}
+		}
 
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("sessionFishCaught"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					sessionFishCaughtEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					sessionFishCaughtEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("fishCaught"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					fishCaughtEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					fishCaughtEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("lastPearl"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					lastPearlEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					lastPearlEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("sessionPearls"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					sessionPearlsEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					sessionPearlsEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("totalPearls"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					totalPearlsEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					totalPearlsEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("actualPearlRate"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					actualPearlRateEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					actualPearlRateEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("wikiPearlRate"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					wikiPearlRateEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					wikiPearlRateEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("dryStreak"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					dryStreakEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					dryStreakEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("bestStreak"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					bestStreakEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					bestStreakEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("totalTench"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					totalTenchEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					totalTenchEnabled = false;
+				}
+			}
+		}
+
+		if (configChanged.getGroup().equals("pearlluck"))
+		{
+			if (configChanged.getKey().equals("showTenchChance"))
+			{
+				if (configChanged.getNewValue().equals("true"))
+				{
+					showTenchChanceEnabled = true;
+				}
+				else if (configChanged.getNewValue().equals("false"))
+				{
+					showTenchChanceEnabled = false;
+				}
+			}
+		}
+	}
 
 	@Subscribe
 	public void onChatMessage(ChatMessage event)
@@ -156,7 +364,6 @@ public class AerialFishingPlugin extends Plugin
 			if (bestStreak == 0 || fishCaught < bestStreak)
 			{
 				bestStreak = fishCaught;
-				//updateOverlay();
 				configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak); // add the value to the config bestStreak
 			}
 
@@ -174,6 +381,7 @@ public class AerialFishingPlugin extends Plugin
 		{
 			totalTenches++;
 			configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);
+			tenchChance = 0;
 		}
 
 
@@ -238,7 +446,14 @@ public class AerialFishingPlugin extends Plugin
 			// User has logged in, now we load the profile
 			loadProfileData();
 		}
+		//log.info("Gamestate: " + event.getGameState());
+
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING){
+			configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
+		}
 	}
+
+
 
 	@Subscribe
 	public void onStatChanged(StatChanged event) { 
@@ -394,6 +609,57 @@ public class AerialFishingPlugin extends Plugin
 	AerialFishingConfig provideConfig()
 	{
 		return configManager.getConfig(AerialFishingConfig.class);
+	}
+
+	public boolean isTotalFishCaughtEnabled()
+	{
+		return totalFishCaughtEnabled;
+	}
+
+	public boolean isSessionFishCaughtEnabled()
+	{
+		return sessionFishCaughtEnabled;
+	}
+
+	public boolean isFishCaughtEnabled()
+	{
+		return fishCaughtEnabled;
+	}
+
+	public boolean isLastPearlEnabled() {
+		return lastPearlEnabled;
+	}
+
+	public boolean isSessionPearlsEnabled() {
+		return sessionPearlsEnabled;
+	}
+
+	public boolean isTotalPearlsEnabled() {
+		return totalPearlsEnabled;
+	}
+
+	public boolean isActualPearlRateEnabled() {
+		return actualPearlRateEnabled;
+	}
+
+	public boolean isWikiPearlRateEnabled() {
+		return wikiPearlRateEnabled;
+	}
+
+	public boolean isDryStreakEnabled() {
+		return dryStreakEnabled;
+	}
+
+	public boolean isBestStreakEnabled() {
+		return bestStreakEnabled;
+	}
+
+	public boolean isTotalTenchEnabled() {
+		return totalTenchEnabled;
+	}
+
+	public boolean isShowTenchChanceEnabled() {
+		return showTenchChanceEnabled;
 	}
 
 	public int getFishCaught()

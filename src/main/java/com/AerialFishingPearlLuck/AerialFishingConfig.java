@@ -48,7 +48,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "fishCaught",
 			name = "Fish caught",
-			description = "Shows the fish caught until you get a Molch Pearl.",
+			description = "Shows the number of fish caught until you get a Molch Pearl. Resets with each Molch Pearl.",
 			section = fishCaughtSection
 	)
 	default boolean fishCaught() {return true;}
@@ -57,7 +57,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "sessionFishCaught",
 			name = "Total Session Fish Caught",
-			description = "Tracks the total fish caught this session",
+			description = "Tracks the total number of fish caught this session.",
 			section = fishCaughtSection
 	)
 	default boolean sessionFishCaught() {return true;}
@@ -65,7 +65,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "totalFishCaught",
 			name = "Total Fish Caught",
-			description = "Tracks the lifetime total number of fish caught while Aerial Fishing",
+			description = "Tracks the lifetime total number of fish caught while Aerial Fishing.",
 			section = fishCaughtSection
 	)
 	default boolean totalFishCaught(){return true;}
@@ -81,7 +81,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "showTenchChance",
 			name = "Show Tench Chance",
-			description = "Every 20 fish caught = .1% (1/20k)",
+			description = "Based on the Wiki Dry Calc. Shows the odds of getting 1 Golden Tench based on the number of fish caught this session.",
 			section = tenchSection
 	)
 	default boolean showTenchChance(){return true;}
@@ -89,7 +89,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "totalTench",
 			name = "Total Golden Tench",
-			description = "The total number of Golden Tench you've caught.",
+			description = "Shows the total number of Golden Tench you've caught.",
 			section = tenchSection
 	)
 	default boolean totalTench() {return true;}
@@ -97,7 +97,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "actualPearlRate",
 			name = "Actual Pearl Rate",
-			description ="Shows your actual Pearl rate, as calculated by fish caught / pearls caught",
+			description ="Shows your actual Pearl rate, as calculated by fish caught / pearls caught.",
 			section = pearlSection
 	)
 	default boolean actualPearlRate(){return true;}
@@ -105,7 +105,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "wikiPearlRate",
 			name = "Wiki Pearl Rate",
-			description ="Pearl rate based on the official calculations. 1/75 to 1/200",
+			description ="Pearl rate based on the official calculations. 1/75 to 1/200.",
 			section = pearlSection
 	)
 	default boolean wikiPearlRate(){return true;}
@@ -113,7 +113,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "totalPearls",
 			name = "Total Pearls",
-			description = "This is the total number of pearls gained",
+			description = "This is the total number of pearls gained lifetime.",
 			section = pearlSection
 	)
 	default boolean totalPearls() {return true;}
@@ -121,7 +121,7 @@ public interface AerialFishingConfig extends Config
 	@ConfigItem(
 			keyName = "sessionPearls",
 			name = "Session Pearls",
-			description = "Enable to see the total pearls caught this session",
+			description = "Shows the number of Molch Pearls caught this session.",
 			section = pearlSection
 	)
 
