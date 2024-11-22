@@ -381,6 +381,7 @@ public class AerialFishingPlugin extends Plugin
 		{
 			totalTenches++;
 			configManager.setRSProfileConfiguration("pearlluck", "totalTench", totalTenches);
+			tenchChance = 0;
 		}
 
 
@@ -445,7 +446,14 @@ public class AerialFishingPlugin extends Plugin
 			// User has logged in, now we load the profile
 			loadProfileData();
 		}
+		//log.info("Gamestate: " + event.getGameState());
+
+		if (event.getGameState() == GameState.LOGIN_SCREEN || event.getGameState() == GameState.HOPPING){
+			configManager.setRSProfileConfiguration("pearlluck", "totalFishCaught", totalFishCaught);
+		}
 	}
+
+
 
 	@Subscribe
 	public void onStatChanged(StatChanged event) { 
