@@ -4,6 +4,8 @@ package com.AerialFishingPearlLuck;
 
 import com.google.inject.Provides;
 import javax.inject.Inject;
+
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import net.runelite.api.*;
 import net.runelite.api.events.ChatMessage;
@@ -46,39 +48,63 @@ public class AerialFishingPlugin extends Plugin
 	@Inject
 	private ConfigManager configManager;
 
-	@Inject
+    // Add this method to access the config
+    @Getter
+    @Inject
 	private AerialFishingConfig config; // Configuration variable
 
-	private int fishCaught = 0;
-	private int dryStreak; // Will be loaded from config
-	private int lastStreak = 0;
+	@Getter
+    private int fishCaught = 0;
+	@Getter
+    private int dryStreak; // Will be loaded from config
+	@Getter
+    private int lastStreak = 0;
 	private int tenchProgress = 0;
-	private int totalPearls;
-	private int sessionPearls;
+	@Getter
+    private int totalPearls;
+	@Getter
+    private int sessionPearls;
 	private int totalTenches;
-	private int bestStreak;
-	private int fishCaughtPearlCaught = 0;
-	private int sessionFishCaught;
-	private double pearlWikiCalc;
+	@Getter
+    private int bestStreak;
+	@Getter
+    private int fishCaughtPearlCaught = 0;
+	@Getter
+    private int sessionFishCaught;
+	@Getter
+    private double pearlWikiCalc;
 	private int levelFishing;
 	private int levelHunter;
 	private boolean doFetchSkillLevels = true;
-	private int totalFishCaught;
+	@Getter
+    private int totalFishCaught;
 	private double tenchChance;
 
 	private boolean overlayAdded = false;
-	private boolean totalFishCaughtEnabled = false;
-	private boolean sessionFishCaughtEnabled = false;
-	private boolean fishCaughtEnabled = false;
-	private boolean lastPearlEnabled = false;
-	private boolean sessionPearlsEnabled = false;
-	private boolean totalPearlsEnabled = false;
-	private boolean actualPearlRateEnabled = false;
-	private boolean wikiPearlRateEnabled = false;
-	private boolean dryStreakEnabled = false;
-	private boolean bestStreakEnabled = false;
-	private boolean totalTenchEnabled = false;
-	private boolean showTenchChanceEnabled = false;
+	@Getter
+    private boolean totalFishCaughtEnabled = false;
+	@Getter
+    private boolean sessionFishCaughtEnabled = false;
+	@Getter
+    private boolean fishCaughtEnabled = false;
+	@Getter
+    private boolean lastPearlEnabled = false;
+	@Getter
+    private boolean sessionPearlsEnabled = false;
+	@Getter
+    private boolean totalPearlsEnabled = false;
+	@Getter
+    private boolean actualPearlRateEnabled = false;
+	@Getter
+    private boolean wikiPearlRateEnabled = false;
+	@Getter
+    private boolean dryStreakEnabled = false;
+	@Getter
+    private boolean bestStreakEnabled = false;
+	@Getter
+    private boolean totalTenchEnabled = false;
+	@Getter
+    private boolean showTenchChanceEnabled = false;
 
 	@Override
 	protected void startUp() throws Exception
@@ -140,182 +166,7 @@ public class AerialFishingPlugin extends Plugin
 	{
 		if (configChanged.getGroup().equals("pearlluck"))
 		{
-			if (configChanged.getKey().equals("totalFishCaught"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					totalFishCaughtEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					totalFishCaughtEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("sessionFishCaught"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					sessionFishCaughtEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					sessionFishCaughtEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("fishCaught"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					fishCaughtEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					fishCaughtEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("lastPearl"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					lastPearlEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					lastPearlEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("sessionPearls"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					sessionPearlsEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					sessionPearlsEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("totalPearls"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					totalPearlsEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					totalPearlsEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("actualPearlRate"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					actualPearlRateEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					actualPearlRateEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("wikiPearlRate"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					wikiPearlRateEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					wikiPearlRateEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("dryStreak"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					dryStreakEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					dryStreakEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("bestStreak"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					bestStreakEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					bestStreakEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("totalTench"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					totalTenchEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					totalTenchEnabled = false;
-				}
-			}
-		}
-
-		if (configChanged.getGroup().equals("pearlluck"))
-		{
-			if (configChanged.getKey().equals("showTenchChance"))
-			{
-				if (configChanged.getNewValue().equals("true"))
-				{
-					showTenchChanceEnabled = true;
-				}
-				else if (configChanged.getNewValue().equals("false"))
-				{
-					showTenchChanceEnabled = false;
-				}
-			}
+			readConfig();
 		}
 	}
 
@@ -561,6 +412,22 @@ public class AerialFishingPlugin extends Plugin
 		totalFishCaught = savedTotalFish;
 	}
 
+	private void readConfig()
+	{
+		totalFishCaughtEnabled = config.totalFishCaught();
+		sessionFishCaughtEnabled = config.sessionFishCaught();
+		fishCaughtEnabled = config.fishCaught();
+		lastPearlEnabled = config.lastPearl();
+		sessionPearlsEnabled = config.sessionPearls();
+		totalPearlsEnabled = config.totalPearls();
+		actualPearlRateEnabled = config.actualPearlRate();
+		wikiPearlRateEnabled = config.wikiPearlRate();
+		dryStreakEnabled = config.dryStreak();
+		bestStreakEnabled = config.bestStreak();
+		totalTenchEnabled = config.totalTench();
+		showTenchChanceEnabled = config.showTenchChance();
+	}
+
 	private boolean loadSkillData(){
 		levelFishing = client.getRealSkillLevel(Skill.FISHING);
 		levelHunter = client.getRealSkillLevel(Skill.HUNTER);
@@ -599,126 +466,21 @@ public class AerialFishingPlugin extends Plugin
 		configManager.setRSProfileConfiguration("pearlluck", "bestStreak", bestStreak);
 	}
 
-	public AerialFishingConfig getConfig()
-	{
-		return config; // Add this method to access the config
-	}
 
-
-	@Provides
+    @Provides
 	AerialFishingConfig provideConfig()
 	{
 		return configManager.getConfig(AerialFishingConfig.class);
 	}
 
-	public boolean isTotalFishCaughtEnabled()
-	{
-		return totalFishCaughtEnabled;
-	}
-
-	public boolean isSessionFishCaughtEnabled()
-	{
-		return sessionFishCaughtEnabled;
-	}
-
-	public boolean isFishCaughtEnabled()
-	{
-		return fishCaughtEnabled;
-	}
-
-	public boolean isLastPearlEnabled() {
-		return lastPearlEnabled;
-	}
-
-	public boolean isSessionPearlsEnabled() {
-		return sessionPearlsEnabled;
-	}
-
-	public boolean isTotalPearlsEnabled() {
-		return totalPearlsEnabled;
-	}
-
-	public boolean isActualPearlRateEnabled() {
-		return actualPearlRateEnabled;
-	}
-
-	public boolean isWikiPearlRateEnabled() {
-		return wikiPearlRateEnabled;
-	}
-
-	public boolean isDryStreakEnabled() {
-		return dryStreakEnabled;
-	}
-
-	public boolean isBestStreakEnabled() {
-		return bestStreakEnabled;
-	}
-
-	public boolean isTotalTenchEnabled() {
-		return totalTenchEnabled;
-	}
-
-	public boolean isShowTenchChanceEnabled() {
-		return showTenchChanceEnabled;
-	}
-
-	public int getFishCaught()
-	{
-		return fishCaught;
-	}
-
-	public double getPearlWikiCalc()
-	{
-		return pearlWikiCalc;
-	}
-
-	public double getGoldenTenchChance()
+    public double getGoldenTenchChance()
 	{
 		return tenchChance;
 	}
 
-	public int getSessionFishCaught()
-	{
-		return sessionFishCaught;
-	}
-
-	public int getTotalFishCaught()
-	{
-		return totalFishCaught;
-	}
-
-	public int getDryStreak()
-	{
-		return dryStreak;
-	}
-
-	public int getTotalPearls()
-	{
-		return totalPearls;
-	}
-
-	public int getTotalTenchs()
+    public int getTotalTenchs()
 	{
 		return totalTenches;
 	}
 
-	public int getLastStreak()
-	{
-		return lastStreak;
-	}
-
-	public int getFishCaughtPearlCaught()
-	{
-		return fishCaughtPearlCaught;
-	}
-
-	public int getBestStreak()
-	{
-		return bestStreak;
-	}
-
-	public int getSessionPearls()
-	{
-		return sessionPearls;
-	}
 }
