@@ -47,7 +47,7 @@ public interface AerialFishingConfig extends Config
 
 	@ConfigItem(
 			keyName = "fishCaught",
-			name = "Fish caught",
+			name = "Fish caught For Pearl",
 			description = "Shows the number of fish caught until you get a Molch Pearl. Resets with each Molch Pearl.",
 			section = fishCaughtSection
 	)
@@ -88,7 +88,7 @@ public interface AerialFishingConfig extends Config
 
 	@ConfigItem(
 			keyName = "totalTench",
-			name = "Total Golden Tench",
+			name = "Total Golden Tenches",
 			description = "Shows the total number of Golden Tench you've caught.",
 			section = tenchSection
 	)
@@ -96,7 +96,7 @@ public interface AerialFishingConfig extends Config
 
 	@ConfigItem(
 			keyName = "actualPearlRate",
-			name = "Actual Pearl Rate",
+			name = "Pearl Rate: Actual",
 			description ="Shows your actual Pearl rate, as calculated by fish caught / pearls caught.",
 			section = pearlSection
 	)
@@ -104,7 +104,7 @@ public interface AerialFishingConfig extends Config
 
 	@ConfigItem(
 			keyName = "wikiPearlRate",
-			name = "Wiki Pearl Rate",
+			name = "Pearl Rate: Wiki",
 			description ="Pearl rate based on the official calculations. 1/75 to 1/200.",
 			section = pearlSection
 	)
