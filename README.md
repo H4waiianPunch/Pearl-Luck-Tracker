@@ -5,6 +5,7 @@ Are you a clogger that wishes Aerial Fishing had more stats to keep you entertai
 Here's what the overlay looks like in game! <br>
 ![OverlayPearlLuckv4](https://github.com/user-attachments/assets/a528223b-f43f-4d02-96db-532905e24d63)
 
+=====YOU MUST HAVE UNTRADEABLE DROP NOTIFICATIONS ON FOR THIS PLUGIN TO WORK=====
 
 With this plugin, you will be able to see the following things:
 - Track the following stats persistently(unless you reset them):
